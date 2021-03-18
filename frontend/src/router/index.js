@@ -5,14 +5,14 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'hello', //登录界面
-    component: () => import('../components/HelloWorld.vue')
+    path: '/login',
+    name: 'login', //登录界面
+    component: () => import('../views/LoginPage.vue')
   },
   {
-    path: '/',
-    name: 'login', //登录界面
-    component: () => import('../components/login/Login.vue')
+    path: '/register',
+    name: 'register', //注册界面
+    component: () => import('../views/RegisterPage.vue')
   }
 ]
 
