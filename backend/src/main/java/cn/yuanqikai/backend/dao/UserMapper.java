@@ -9,11 +9,11 @@ public interface UserMapper {
 
     int insertSelective(User record);
 
-    int getUserCount(String userName);
-
     User selectByUserName(String userName);
 
     User selectByPrimaryKey(Integer userId);
+
+    Integer getUserCount(String userName);
 
     int updateByPrimaryKeySelective(User record);
 

@@ -1,6 +1,7 @@
 package cn.yuanqikai.backend.controller;
 
 import cn.yuanqikai.backend.response.BaseResponse;
+import cn.yuanqikai.backend.response.DataResponse;
 import cn.yuanqikai.backend.service.RegisterService;
 import cn.yuanqikai.backend.vo.RegisterVO;
 import org.slf4j.Logger;
@@ -21,16 +22,15 @@ public class RegisterController {
 
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
     @PostMapping("/api/register")
-    public BaseResponse register(@RequestBody RegisterVO registerVO) {
+    public DataResponse register(@RequestBody RegisterVO registerVO) {
         // 打印注册用户注册日志
         logger.warn(registerVO.toString());
         registerService.register(registerVO);
-        return BaseResponse.success();
+        return DataResponse.success();
     }
 
-    /*@PostMapping("/api/register")
-    public String hasExisted(@RequestParam(value = "hasExisted") String msg){
-
-        return "";
+    /*@PostMapping("/api/getRegisterMsg")
+    public String getMsg(@RequestBody RegisterVO registerVO){
+        return registerService.register(registerVO);
     }*/
 }

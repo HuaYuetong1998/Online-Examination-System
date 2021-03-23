@@ -5,7 +5,6 @@ import cn.yuanqikai.backend.entity.User;
 import cn.yuanqikai.backend.exception.UserException;
 import cn.yuanqikai.backend.exception.enums.UserEnum;
 import cn.yuanqikai.backend.service.RegisterService;
-import cn.yuanqikai.backend.utils.SHACodeUtils;
 import cn.yuanqikai.backend.vo.RegisterVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,13 +56,20 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public void checkLoginName(String userName) {
-        if (StringUtils.isBlank(userName)) {
-            throw new UserException(UserEnum.USER_NAME_BLANK);
+        try{
+            if (StringUtils.isBlank(userName)) {
+                throw new UserException(UserEnum.USER_NAME_BLANK);
+            }
+        }catch (UserException e) {
+            e.printStackTrace();
         }
 
-        if (userMapper.getUserCount(userName) == 1) {
-            throw new UserException(UserEnum.USER_HAS_EXISTED);
+        try{
+            if (userMapper.getUserCount(userName).equals(1)) {
+                throw new UserException(UserEnum.USER_HAS_EXISTED);
+            }
+        }catch (UserException e) {
+            e.printStackTrace();
         }
-        //TODO 检查用户名是否存在
     }
 }

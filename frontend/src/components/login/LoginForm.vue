@@ -45,55 +45,7 @@ export default {
         login() {
             let username = this.form.username
             let password = this.form.password
-            
-            if (username === '' || username === null) {
-                this.$message({
-                showClose:true,
-                message:'登录账号为空，请输入账号！',
-                type:'error'
-                })
-            }else if (password === '' || password === null) {
-                this.$message({
-                showClose:true,
-                message:'登录密码为空，请输入密码！',
-                type:'error'
-                })
-            }
 
-             // axios请求拦截器
-            axios.interceptors.request.use((config) => {
-                config.headers['X-Requested-With'] = 'XMLHttpRequest'
-                return config;
-            })
-            axios.interceptors.response.use((response) => {
-                return response;
-            },(error) => {
-                switch(error.response.status) {
-                    case 400:
-                        this.$message({
-                        showClose:true,
-                        message:'登录异常，请重试',
-                        type:'error'
-                        })
-                        break;
-                    case 500:
-                        this.$message({
-                        showClose:true,
-                        message:'您输入的账号密码可能有误，请重试！',
-                        type:'error'
-                        })
-                        //console.log(error.response)
-                        break;
-                    default:
-                        this.$message({
-                        showClose:true,
-                        message:'发生了未知的错误！',
-                        type:'error'
-                        })
-                }
-                Response.Clear()
-                return Promise.reject(error);
-            })
             axios({
                 method: 'post',
                 url: '/api/login',
@@ -108,6 +60,49 @@ export default {
                     type:'success'
                 })
                 this.$router.push({path:'/'})
+            }).catch(error => {
+                if(error.response) {
+                    if (username === '' || username === null) {
+                        this.$message({
+                        showClose:true,
+                        message:'登录账号为空，请输入账号！',
+                        type:'error'
+                        })
+                    }else if (password === '' || password === null) {
+                        this.$message({
+                        showClose:true,
+                        message:'登录密码为空，请输入密码！',
+                        type:'error'
+                        })
+                    }else {
+                        switch(error.response.status) {
+                            case 400:
+                                this.$message({
+                                showClose:true,
+                                message:'登录异常，请重试',
+                                type:'error'
+                                })
+                                console.log('Error',error)
+                                break;
+                            case 500:
+                                console.log(error.response.data)
+                                this.$message({
+                                showClose:true,
+                                message:'您输入的账号密码可能有误，请重试！',
+                                type:'error'
+                                })
+                                console.log('Error',error)
+                                break;
+                            default:
+                                this.$message({
+                                showClose:true,
+                                message:'发生了未知的错误！',
+                                type:'error'
+                                })
+                                console.log('Error',error)
+                        }
+                    }
+                }
             })
         }
     }

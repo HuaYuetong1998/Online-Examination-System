@@ -28,9 +28,9 @@
     from user
     where user_name = #{userName,jdbcType=VARCHAR}
   </select>
-  <select id="getUserCount" parameterType="java.lang.String" resultType="int">
+  <select id="getUserCount" parameterType="java.lang.String" resultType="java.lang.Integer">
     select
-    <include refid="Base_Column_List" />
+    count(*)
     from user
     where user_name = #{userName,jdbcType=VARCHAR}
   </select>

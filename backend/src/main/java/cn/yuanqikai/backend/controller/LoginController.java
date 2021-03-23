@@ -1,6 +1,7 @@
 package cn.yuanqikai.backend.controller;
 
 import cn.yuanqikai.backend.response.BaseResponse;
+import cn.yuanqikai.backend.response.DataResponse;
 import cn.yuanqikai.backend.service.LoginService;
 import cn.yuanqikai.backend.vo.LoginVO;
 import org.slf4j.Logger;
@@ -22,11 +23,11 @@ public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
 
     @PostMapping("/api/login")
-    public BaseResponse login(@RequestBody LoginVO loginVO) {
+    public DataResponse login(@RequestBody LoginVO loginVO) {
 
         logger.warn(loginVO.toString());
         // 登录
         loginService.Login(loginVO);
-        return BaseResponse.success();
+        return DataResponse.success();
     }
 }
