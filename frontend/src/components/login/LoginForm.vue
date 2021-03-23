@@ -14,7 +14,7 @@
                         <a href="javascript:;">忘记密码？</a>
                     </div>
                     <el-row class="login-button">
-                        <el-button type="primary" size="medium">登录</el-button>
+                        <el-button type="primary" size="medium" @click="login">登录</el-button>
                     </el-row>
                     <el-row class="register-title">
                         <router-link to="/register">
@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+import { sha256 } from 'js-sha256'
 export default {
     name:'login',
     data() {
@@ -40,7 +42,74 @@ export default {
         }
     },
     methods: {
-    
+        login() {
+            let username = this.form.username
+            let password = this.form.password
+            
+            if (username === '' || username === null) {
+                this.$message({
+                showClose:true,
+                message:'登录账号为空，请输入账号！',
+                type:'error'
+                })
+            }else if (password === '' || password === null) {
+                this.$message({
+                showClose:true,
+                message:'登录密码为空，请输入密码！',
+                type:'error'
+                })
+            }
+
+             // axios请求拦截器
+            axios.interceptors.request.use((config) => {
+                config.headers['X-Requested-With'] = 'XMLHttpRequest'
+                return config;
+            })
+            axios.interceptors.response.use((response) => {
+                return response;
+            },(error) => {
+                switch(error.response.status) {
+                    case 400:
+                        this.$message({
+                        showClose:true,
+                        message:'登录异常，请重试',
+                        type:'error'
+                        })
+                        break;
+                    case 500:
+                        this.$message({
+                        showClose:true,
+                        message:'您输入的账号密码可能有误，请重试！',
+                        type:'error'
+                        })
+                        //console.log(error.response)
+                        break;
+                    default:
+                        this.$message({
+                        showClose:true,
+                        message:'发生了未知的错误！',
+                        type:'error'
+                        })
+                }
+                Response.Clear()
+                return Promise.reject(error);
+            })
+            axios({
+                method: 'post',
+                url: '/api/login',
+                data: {
+                    userName: this.form.username,
+                    password: sha256(this.form.password)
+                }
+            }).then(res => {
+                this.$message({
+                    showClose:true,
+                    message:'登录成功',
+                    type:'success'
+                })
+                this.$router.push({path:'/'})
+            })
+        }
     }
 }
 </script>

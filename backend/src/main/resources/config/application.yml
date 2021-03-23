@@ -1,7 +1,10 @@
 server:
-  port:8081
+  port: 8081
 
 spring:
+  output:
+    ansi:
+      enable: ALWAYS
   datasource:
     name: examination #数据库名称
     type: com.alibaba.druid.pool.DruidDataSource
@@ -43,3 +46,6 @@ pagehelper:
   supportMethodsArguments: true
   params: count=countSql
   returnPageInfo: check
+
+logging:
+  config: classpath:config/log4j2.xml

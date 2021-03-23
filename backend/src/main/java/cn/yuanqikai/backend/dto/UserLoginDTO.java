@@ -4,32 +4,48 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * @author yuanqikai
- * @date 2021-03-18 11:50
+ * @date 2021-03-22 17:16
  */
 public class UserLoginDTO {
 
-    private UserDTO user;
+    private Integer userId;
 
-    private String token;
+    private String userName;
 
-    public UserLoginDTO() {
+    private String password;
 
+    private String realName;
+
+    public Integer getUserId() {
+        return userId;
     }
 
-    public UserDTO getUser() {
-        return user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public void setUser(UserDTO user) {
-        this.user = user;
+    public String getUserName() {
+        return userName;
     }
 
-    public String getToken() {
-        return token;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     public String toString() {

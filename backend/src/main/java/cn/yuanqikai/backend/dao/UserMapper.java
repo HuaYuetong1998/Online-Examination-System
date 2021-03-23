@@ -3,13 +3,17 @@ package cn.yuanqikai.backend.dao;
 import cn.yuanqikai.backend.entity.User;
 
 public interface UserMapper {
-    int deleteByPrimaryKey(Integer userid);
+    int deleteByPrimaryKey(Integer userId);
 
     int insert(User record);
 
     int insertSelective(User record);
 
-    User selectByPrimaryKey(Integer userid);
+    int getUserCount(String userName);
+
+    User selectByUserName(String userName);
+
+    User selectByPrimaryKey(Integer userId);
 
     int updateByPrimaryKeySelective(User record);
 

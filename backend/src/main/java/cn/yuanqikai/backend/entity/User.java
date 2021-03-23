@@ -3,15 +3,15 @@ package cn.yuanqikai.backend.entity;
 import java.util.Date;
 
 public class User {
-    private Integer userid;
+    private Integer userId;
 
-    private String username;
+    private String userName;
 
     private String password;
 
     private String gender;
 
-    private String realname;
+    private String realName;
 
     private String tel;
 
@@ -23,20 +23,20 @@ public class User {
 
     private Date updatetime;
 
-    public Integer getUserid() {
-        return userid;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
     }
 
     public String getPassword() {
@@ -55,12 +55,12 @@ public class User {
         this.gender = gender == null ? null : gender.trim();
     }
 
-    public String getRealname() {
-        return realname;
+    public String getRealName() {
+        return realName;
     }
 
-    public void setRealname(String realname) {
-        this.realname = realname == null ? null : realname.trim();
+    public void setRealName(String realName) {
+        this.realName = realName == null ? null : realName.trim();
     }
 
     public String getTel() {
