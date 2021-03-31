@@ -5,18 +5,26 @@
 </template>
 
 <script>
-
 export default {
-  name: 'app',
-}
-
+  name: "app",
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, SimSun, sans-serif;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
   text-align: center;
+}
+body,
+html,
+ul,
+li,
+p {
+  margin: 0;
+  padding: 0;
 }
 </style>

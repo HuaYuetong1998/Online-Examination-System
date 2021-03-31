@@ -6,10 +6,12 @@ import cn.yuanqikai.backend.entity.User;
 import cn.yuanqikai.backend.exception.UserException;
 import cn.yuanqikai.backend.exception.enums.UserEnum;
 import cn.yuanqikai.backend.service.LoginService;
-import cn.yuanqikai.backend.utils.SHACodeUtils;
 import cn.yuanqikai.backend.vo.LoginVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpSession;
+
 
 /**
  * @author yuanqikai
@@ -42,6 +44,7 @@ public class LoginServiceImpl implements LoginService {
             userLoginDTO.setUserName(user.getUserName());
             userLoginDTO.setPassword(user.getPassword());
             userLoginDTO.setRealName(user.getRealName());
+            userLoginDTO.setRole(user.getRole());
             return userLoginDTO;
         }else {
             throw new UserException(UserEnum.USER_NOT_EXIST);

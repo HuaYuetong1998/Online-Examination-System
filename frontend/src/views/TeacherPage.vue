@@ -1,5 +1,6 @@
 <template>
   <div>
+      <div>教师页面</div>
       <navbar></navbar>
   </div>
 </template>

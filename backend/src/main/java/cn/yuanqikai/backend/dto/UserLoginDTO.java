@@ -16,6 +16,10 @@ public class UserLoginDTO {
 
     private String realName;
 
+    private Integer role;
+
+    private String token;
+
     public Integer getUserId() {
         return userId;
     }
@@ -46,6 +50,22 @@ public class UserLoginDTO {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public Integer getRole() {
+        return role;
+    }
+
+    public void setRole(Integer role) {
+        this.role = role;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String toString() {

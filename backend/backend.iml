@@ -110,5 +110,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.13.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:2.2" level="project" />
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.10" level="project" />
+    <orderEntry type="library" name="Maven: io.jsonwebtoken:jjwt:0.9.1" level="project" />
   </component>
 </module>

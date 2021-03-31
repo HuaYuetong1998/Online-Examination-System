@@ -11,12 +11,12 @@ export default {
     name:'navbar',
     data() {
         return {
-            message:'user'
+            message:this.$cookies.get("crealname")
         }
     }
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 
 </style>
