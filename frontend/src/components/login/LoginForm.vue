@@ -3,15 +3,15 @@
     <el-col :lg="10" :md="12" :xs="18" :span="12">
       <div class="main">
         <p class="info">登 录</p>
-        <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item label="用户名" class="input">
+        <el-form ref="form" :model="form" label-width="80px" class="login-form">
+          <el-form-item label="用户名：" class="input">
             <el-input
               v-model="form.username"
               placeholder="请输入用户名"
               clearable
             ></el-input>
           </el-form-item>
-          <el-form-item label="密码" class="input">
+          <el-form-item label="密码：" class="input">
             <el-input
               v-model="form.password"
               placeholder="请输入密码"
@@ -29,7 +29,6 @@
           </el-row>
           <el-row class="register-title">
             <router-link to="/register">
-              <!-- <el-button type="primary" size="medium" plain>注册</el-button>   -->
               <span>还没有账号？去注册</span>
             </router-link>
           </el-row>
@@ -100,7 +99,7 @@ export default {
                   this.$cookies.set("role", resData.role, expireTimes, "/");
                   this.$cookies.set("token", resData.token, expireTimes, "/");
                   sessionStorage.setItem("token", resData.token);
-                  this.$router.push({ path: "/admin" });
+                  this.$router.push({ path: "/admin/index" });
                   break;
                 case 1:
                   this.$cookies.set(
@@ -124,7 +123,7 @@ export default {
                   this.$cookies.set("role", resData.role, expireTimes, "/");
                   this.$cookies.set("token", resData.token, 10, "/");
                   sessionStorage.setItem("token", resData.token);
-                  this.$router.push({ path: "/teacher" });
+                  this.$router.push({ path: "/teacher/index" });
                   break;
                 case 2:
                   this.$cookies.set(
@@ -207,31 +206,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .main {
   margin-top: 50px;
   background: #ffffff;
   border-radius: 6px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px 20px 20px 20px;
+  height: auto;
 }
 .info {
-  padding-top: 30px;
   text-align: center;
   font-size: 30px;
   color: rgb(69, 158, 231);
   font-weight: bold;
 }
-.el-form {
-  margin: 15px 30px;
+.login-form {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .input {
-  margin-bottom: 15px;
-  margin-right: 20px;
+  margin: 10px 10px 10px 30px;
+  width: 80%;
 }
+
 .el-form:last-child {
   padding-bottom: 30px;
 }
@@ -243,12 +246,13 @@ export default {
   font-size: 14px;
 }
 .el-button {
-  width: 200px;
+  width: 40%;
+  margin-top: 20px;
 }
 .forget {
   font-size: 12px;
   text-align: right;
-  margin-right: 15px;
+  margin-right: 60px;
 }
 .forget a:link,
 a:visited {

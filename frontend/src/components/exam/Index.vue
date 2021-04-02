@@ -2,9 +2,7 @@
   <div class="main-wrapper">
     <div class="main">
       <div class="block">
-        <span class="block-title" style="background: rgb(103, 194, 58)"
-          >通知公告</span
-        >
+        <span class="block-title" style="background: #409eff">通知公告</span>
         <div class="block-container">
           <el-collapse accordion>
             <el-collapse-item title="考试条约" class="notice-title">
@@ -39,47 +37,56 @@
           class="block-container"
           style="display: flex; flex-wrap: wrap; justify-content: space-between"
         >
-          <a href="#" class="urlLink">
-            <el-card class="box-card" shadow="hover">
-              <ul>
-                <li>考试名称</li>
-                <li>学科:</li>
-                <li>试卷类型：</li>
-                <li>题目数量：</li>
-                <li>试卷总分：</li>
-                <li>建议时长：</li>
-                <li>发布时间：</li>
-              </ul>
-            </el-card>
-          </a>
+          <div>
+            <selectPaper></selectPaper>
+          </div>
+          <div class="paper">
+            <a href="#" class="urlLink">
+              <el-card class="box-card" shadow="hover">
+                <ul>
+                  <li>考试名称</li>
+                  <li>学科:</li>
+                  <li>试卷类型：</li>
+                  <li>题目数量：</li>
+                  <li>试卷总分：</li>
+                  <li>建议时长：</li>
+                  <li>发布时间：</li>
+                </ul>
+              </el-card>
+            </a>
 
-          <a href="#" class="urlLink">
-            <el-card class="box-card" shadow="hover">
-              <ul>
-                <li>考试名称</li>
-                <li>学科:</li>
-                <li>试卷类型：</li>
-                <li>题目数量：</li>
-                <li>试卷总分：</li>
-                <li>建议时长：</li>
-                <li>发布时间：</li>
-              </ul>
-            </el-card>
-          </a>
+            <a href="#" class="urlLink">
+              <el-card class="box-card" shadow="hover">
+                <ul>
+                  <li>考试名称</li>
+                  <li>学科:</li>
+                  <li>试卷类型：</li>
+                  <li>题目数量：</li>
+                  <li>试卷总分：</li>
+                  <li>建议时长：</li>
+                  <li>发布时间：</li>
+                </ul>
+              </el-card>
+            </a>
 
-          <a href="#" class="urlLink">
-            <el-card class="box-card" shadow="hover">
-              <ul>
-                <li>考试名称</li>
-                <li>学科:</li>
-                <li>试卷类型：</li>
-                <li>题目数量：</li>
-                <li>试卷总分：</li>
-                <li>建议时长：</li>
-                <li>发布时间：</li>
-              </ul>
-            </el-card>
-          </a>
+            <a href="#" class="urlLink">
+              <el-card class="box-card" shadow="hover">
+                <ul>
+                  <li>考试名称</li>
+                  <li>学科:</li>
+                  <li>试卷类型：</li>
+                  <li>题目数量：</li>
+                  <li>试卷总分：</li>
+                  <li>建议时长：</li>
+                  <li>发布时间：</li>
+                </ul>
+              </el-card>
+            </a>
+
+            <div class="pageination">
+              <pageination></pageination>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -87,7 +94,14 @@
 </template>
 
 <script>
+import pageination from "../exam/Pagination";
+import selectPaper from "../exam/Select";
+
 export default {
+  components: {
+    pageination,
+    selectPaper,
+  },
   name: "index",
   data() {
     return {
@@ -109,6 +123,7 @@ export default {
   background: #fff;
 }
 .block {
+  padding: 40px 40px;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
@@ -120,16 +135,14 @@ export default {
   font-size: 16px;
   font-weight: 400;
   padding: 10px 25px;
-
   color: #fff;
   border-radius: 4px;
   width: 100px;
   position: relative;
-  left: -50px;
-  top: 15px;
+  left: -100px;
 }
 .block-container {
-  padding: 30px;
+  padding: 30px 0px 10px 0px;
 }
 .el-collapse-item__header {
   border: 0px;
@@ -143,7 +156,7 @@ export default {
 .box-card {
   margin-top: 30px;
   width: 450px;
-  height: 240px;
+  height: auto;
   display: flex;
 }
 .box-card span {
@@ -166,5 +179,15 @@ export default {
 }
 .urlLink {
   text-decoration: none;
+}
+.paper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+.pageination {
+  width: 100%;
+  margin-top: 20px;
 }
 </style>

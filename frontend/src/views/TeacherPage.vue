@@ -1,19 +1,24 @@
 <template>
-  <div>
-      <div>教师页面</div>
-      <navbar></navbar>
+  <div class="teacher">
+    <headerBar></headerBar>
+    <mainPart></mainPart>
   </div>
 </template>
 
 <script>
-import navbar from '../components/common/Nav'
-
+import headerBar from "../components/manage/Header";
+import mainPart from "../components/manage/Main";
 export default {
-    components:{
-        navbar
-    }
-}
+  components: {
+    headerBar,
+    mainPart,
+  },
+};
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+html {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
 </style>

@@ -15,8 +15,8 @@ VueRouter.prototype.push = function push(location) {
 const routes = [
   {
     path: '/',
-    name: 'test', //登录界面
-    component: () => import('../components/exam/Test.vue'),
+    name: 'test', //测试
+    component: () => import('../components/exam/Pagination.vue'),
     meta:{
       title:'test',
       keepAlive:true
@@ -41,8 +41,8 @@ const routes = [
     }
   },
   {
-    path: '/student/index',
-    name: 'index',
+    path: '/student/index', //学生主页
+    name: 'studentIndex',
     component: () => import('../views/Index.vue'),
     meta:{
       title:'软工综合测试系统',
@@ -50,7 +50,7 @@ const routes = [
     }
   },
   {
-    path: '/student/exam',
+    path: '/student/exam', //我的考试页面
     name: 'exam',
     component: () => import('../views/StudentExamPage.vue'),
     meta:{
@@ -59,7 +59,7 @@ const routes = [
     }
   },
   {
-    path: '/student/practice',
+    path: '/student/practice', //练习页面
     name: 'practice',
     component: () => import('../views/StudentPracticePage.vue'),
     meta:{
@@ -68,7 +68,7 @@ const routes = [
     }
   },
   {
-    path: '/student/score',
+    path: '/student/score', //学生成绩页面
     name: 'score',
     component: () => import('../views/StudentScorePage.vue'),
     meta:{
@@ -77,16 +77,63 @@ const routes = [
     }
   },
   {
-    path: '/teacher',
+    path: '/teacher/',
     name: 'teacher',
     component: () => import('../views/TeacherPage.vue'),
+    children:[
+      {
+        path: 'index',
+        name: 'teacherIndex',
+        component: () => import('../components/manage/Index.vue'),
+        meta:{
+          title:'软工综合测试系统',
+          keepAlive: true
+        }
+      },
+      {
+        path: 'studentManage',
+        name: 'studentManage',
+        component: () => import('../components/manage/StudentManage.vue'),
+        meta:{
+          title:'软工综合测试系统',
+          keepAlive: true
+        }
+      },
+      {
+        path: 'paper',
+        name: 'paper',
+        component: () => import('../components/manage/PaperManage.vue'),
+        meta:{
+          title:'软工综合测试系统',
+          keepAlive: true
+        }
+      },
+      {
+        path: 'questionsPools',
+        name: 'questionsPools',
+        component: () => import('../components/manage/QuestionsPools.vue'),
+        meta:{
+          title:'软工综合测试系统',
+          keepAlive: true
+        }
+      },
+      {
+        path: 'score',
+        name: 'scoreManage',
+        component: () => import('../components/manage/ScoreManage.vue'),
+        meta:{
+          title:'软工综合测试系统',
+          keepAlive: true
+        }
+      },
+    ],
     meta:{
       title:'软工综合测试系统',
       keepAlive: true
     }
   },
   {
-    path: '/admin',
+    path: '/admin/index',
     name: 'admin',
     component: () => import('../views/AdminPage.vue'),
     meta:{

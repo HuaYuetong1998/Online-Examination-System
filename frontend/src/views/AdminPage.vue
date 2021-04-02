@@ -1,18 +1,13 @@
 <template>
   <div>
-      <div>管理员页面</div>
-      <navbar></navbar>
+    <div>管理员页面</div>
   </div>
 </template>
 
 <script>
-import navbar from '../components/common/Nav'
-
 export default {
-    components:{
-        navbar
-    }
-}
+  components: {},
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 <template>
-  <div class="headerWrapper">
+  <div class="header-wrapper">
     <div class="header">
       <div class="container">
         <h1>
@@ -21,9 +21,9 @@
             >考前练习</el-menu-item
           >
           <el-menu-item class="nav-item" index="score">我的成绩</el-menu-item>
-          <el-menu-item style="padding: 0">
+          <div style="padding: 0" class="gap">
             <div class="nav-gap"></div>
-          </el-menu-item>
+          </div>
           <el-col class="nav-item lang-item">
             <el-dropdown @command="handleCommand" trigger="click">
               <p class="el-dropdown-link">
@@ -34,9 +34,7 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item command="info">个人信息</el-dropdown-item>
-                  <el-dropdown-item
-                    command="modifyPwd"
-                    @click="dialogFormVisible = true"
+                  <el-dropdown-item command="modifyPwd"
                     >修改密码</el-dropdown-item
                   >
                   <el-dropdown-item command="logout">退出登录</el-dropdown-item>
@@ -48,47 +46,35 @@
       </div>
 
       <!-- 修改密码模块 -->
-
-      <!-- <el-dialog title="修改密码" v-model="dialogFormVisible">
-        <el-form :model="form">
-          <el-form-item label="原始密码" :label-width="formLabelWidth">
-            <el-input v-model="form.oldPassword" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="新密码" :label-width="formLabelWidth">
-            <el-input v-model="form.password" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="重复密码" :label-width="formLabelWidth">
-            <el-input
-              v-model="form.repeatPassword"
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-        </el-form>
-
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-          </span>
-        </template>
-      </el-dialog> -->
+      <el-dialog
+        title="修改密码"
+        :visible.sync="dialogFormVisible"
+        :append-to-body="true"
+        :close-on-click-modal="false"
+      >
+        <modifyPwd></modifyPwd>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="dialogFormVisible = false"
+            >确 定</el-button
+          >
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
+import modifyPwd from "../exam/ModifyPwd";
 export default {
+  components: {
+    modifyPwd,
+  },
   name: "headBar",
   data() {
     return {
       realname: this.$cookies.get("crealname"),
       dialogFormVisible: false,
-      form: {
-        oldPassword: "",
-        password: "",
-        repeatPassword: "",
-      },
-      formLabelWidth: "120px",
       tabName: this.$route.name,
     };
   },
@@ -99,6 +85,7 @@ export default {
           this.$message("info");
           break;
         case "modifyPwd":
+          this.dialogFormVisible = true;
           break;
         case "logout":
           this.$router.push("/login");
@@ -114,7 +101,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.headerWrapper {
+.header-wrapper {
   height: 80px;
 }
 .header {
@@ -186,6 +173,9 @@ a:visited {
   height: 80px;
   position: relative;
 }
+.gap {
+  float: left;
+}
 .header .nav-gap::before {
   content: "";
   position: absolute;
@@ -209,5 +199,11 @@ a:visited {
 }
 .header .nav-item .el-icon-s-custom {
   font-size: 16px;
+}
+.dialog-footer {
+  text-align: center;
+}
+.dialog-footer .el-button {
+  width: 30%;
 }
 </style>
