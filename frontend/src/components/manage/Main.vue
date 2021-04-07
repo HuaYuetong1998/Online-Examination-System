@@ -10,6 +10,7 @@
         background-color="#545c64"
         text-color="#fff"
         active-text-color="#ffd04b"
+        :unique-opened="true"
         router
       >
         <!-- 展开收起菜单功能 -->
@@ -35,10 +36,8 @@
             <span>题库管理</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="/teacher/questionsPools"
-              >录入题目</el-menu-item
-            >
-            <el-menu-item index="2">查看题库</el-menu-item>
+            <el-menu-item index="/manage/addQuestions">录入题目</el-menu-item>
+            <el-menu-item index="/manage/questionsList">查看题库</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-submenu class="item" index="2">
@@ -47,7 +46,7 @@
             <span>试卷管理</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="/teacher/paper">添加试卷</el-menu-item>
+            <el-menu-item index="/manage/paper">添加试卷</el-menu-item>
             <el-menu-item index="2">发布试卷</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
@@ -57,7 +56,7 @@
             <span>学生管理</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="/teacher/studentManager"
+            <el-menu-item index="/manage/studentManage"
               >添加学生信息</el-menu-item
             >
             <el-menu-item index="2">查看学生信息</el-menu-item>
@@ -69,7 +68,7 @@
             <span>成绩查看</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="/teacher/score">查看成绩</el-menu-item>
+            <el-menu-item index="/manage/score">查看成绩</el-menu-item>
             <el-menu-item index="2">查看题库</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
@@ -133,7 +132,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .container {
   display: flex;
   justify-content: flex-start;

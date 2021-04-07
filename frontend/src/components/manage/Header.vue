@@ -74,7 +74,7 @@ export default {
     },
     handleSelect(tabName) {
       this.$store.commit("changeTab", tabName);
-      this.$router.push({ path: "/teacher/" + tabName });
+      this.$router.push({ path: "/manage/" + tabName });
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <div class="teacher">
+  <div class="manage">
     <headerBar></headerBar>
     <mainPart></mainPart>
   </div>

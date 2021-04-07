@@ -77,9 +77,9 @@ const routes = [
     }
   },
   {
-    path: '/teacher/',
-    name: 'teacher',
-    component: () => import('../views/TeacherPage.vue'),
+    path: '/manage',
+    name: 'manage',
+    component: () => import('../views/Manage.vue'),
     children:[
       {
         path: 'index',
@@ -109,9 +109,18 @@ const routes = [
         }
       },
       {
-        path: 'questionsPools',
-        name: 'questionsPools',
-        component: () => import('../components/manage/QuestionsPools.vue'),
+        path: 'addQuestions',
+        name: 'addQuestions',
+        component: () => import('../components/manage/AddQuestions.vue'),
+        meta:{
+          title:'软工综合测试系统',
+          keepAlive: true
+        }
+      },
+      {
+        path: 'questionsList',
+        name: 'questionsList',
+        component: () => import('../components/manage/QuestionsList.vue'),
         meta:{
           title:'软工综合测试系统',
           keepAlive: true

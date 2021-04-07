@@ -99,7 +99,7 @@ export default {
                   this.$cookies.set("role", resData.role, expireTimes, "/");
                   this.$cookies.set("token", resData.token, expireTimes, "/");
                   sessionStorage.setItem("token", resData.token);
-                  this.$router.push({ path: "/admin/index" });
+                  this.$router.push({ path: "/manage/index" });
                   break;
                 case 1:
                   this.$cookies.set(
@@ -123,7 +123,7 @@ export default {
                   this.$cookies.set("role", resData.role, expireTimes, "/");
                   this.$cookies.set("token", resData.token, 10, "/");
                   sessionStorage.setItem("token", resData.token);
-                  this.$router.push({ path: "/teacher/index" });
+                  this.$router.push({ path: "/manage/index" });
                   break;
                 case 2:
                   this.$cookies.set(
