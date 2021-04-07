@@ -49,3 +49,11 @@ pagehelper:
 
 logging:
   config: classpath:config/log4j2.xml
+
+#mybatis-plus:
+#  mapper-locations: classpath:mapper/**/*Mapper.xml
+#  type-aliases-package: cn.yuanqikai.backend.mapper
+#  configuration:
+#    map-underscore-to-camel-case: true
+#    auto-mapping-behavior: full
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

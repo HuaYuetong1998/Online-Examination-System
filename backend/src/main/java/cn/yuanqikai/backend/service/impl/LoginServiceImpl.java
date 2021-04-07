@@ -1,16 +1,15 @@
 package cn.yuanqikai.backend.service.impl;
 
-import cn.yuanqikai.backend.dao.UserMapper;
-import cn.yuanqikai.backend.dto.UserLoginDTO;
 import cn.yuanqikai.backend.entity.User;
+import cn.yuanqikai.backend.mapper.UserMapper;
+import cn.yuanqikai.backend.dto.UserLoginDTO;
+
 import cn.yuanqikai.backend.exception.UserException;
 import cn.yuanqikai.backend.exception.enums.UserEnum;
 import cn.yuanqikai.backend.service.LoginService;
 import cn.yuanqikai.backend.vo.LoginVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpSession;
 
 
 /**
@@ -33,7 +32,7 @@ public class LoginServiceImpl implements LoginService {
         //在前端进行sha256加密
         //String shaPassword = SHACodeUtils.getSHA256(password);
 
-        User user = userMapper.selectByUserName(userName);
+        User user = (User) userMapper.selectByUserName(userName);
         if (user == null) {
             throw new UserException(UserEnum.USER_NOT_EXIST);
         }

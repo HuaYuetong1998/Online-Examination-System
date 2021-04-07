@@ -1,6 +1,6 @@
 package cn.yuanqikai.backend.service.impl;
 
-import cn.yuanqikai.backend.dao.UserMapper;
+import cn.yuanqikai.backend.mapper.UserMapper;
 import cn.yuanqikai.backend.entity.User;
 import cn.yuanqikai.backend.exception.UserException;
 import cn.yuanqikai.backend.exception.enums.UserEnum;
@@ -48,8 +48,8 @@ public class RegisterServiceImpl implements RegisterService {
         user.setRole(role);
 
         Date today = new Date();
-        user.setCreatetime(today);
-        user.setUpdatetime(today);
+        user.setCreateTime(today);
+        user.setUpdateTime(today);
 
         userMapper.insert(user);
     }

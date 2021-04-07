@@ -1,10 +1,8 @@
-package cn.yuanqikai.backend.dao;
+package cn.yuanqikai.backend.mapper;
 
 import cn.yuanqikai.backend.entity.User;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-public interface UserMapper extends BaseMapper<User> {
-
+public interface UserMapper {
     int deleteByPrimaryKey(Integer userId);
 
     int insert(User record);

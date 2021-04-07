@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("cn.yuanqikai.backend.dao")
+@MapperScan("cn.yuanqikai.backend.mapper")
 public class BackendApplication {
 
     public static void main(String[] args) {

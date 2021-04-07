@@ -22,10 +22,22 @@
     from user
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
+  <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where user_name = #{userName,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
+  <select id="getUserCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+      count(*)
+    from user
+    where user_name = #{userName,jdbcType=VARCHAR}
+  </select>
   <insert id="insert" parameterType="cn.yuanqikai.backend.entity.User">
     insert into user (user_id, user_name, password, 
       gender, real_name, tel, 
