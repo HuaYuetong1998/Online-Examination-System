@@ -1,9 +1,9 @@
 package cn.yuanqikai.backend.entity;
 
 public class ChoiceQuestion {
-    private Long questionId;
+    private Integer questionId;
 
-    private String subject;
+    private Integer subjectId;
 
     private String question;
 
@@ -23,20 +23,20 @@ public class ChoiceQuestion {
 
     private Integer level;
 
-    public Long getQuestionId() {
+    public Integer getQuestionId() {
         return questionId;
     }
 
-    public void setQuestionId(Long questionId) {
+    public void setQuestionId(Integer questionId) {
         this.questionId = questionId;
     }
 
-    public String getSubject() {
-        return subject;
+    public Integer getSubjectId() {
+        return subjectId;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject == null ? null : subject.trim();
+    public void setSubjectId(Integer subjectId) {
+        this.subjectId = subjectId;
     }
 
     public String getQuestion() {

@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-pagination
+      background
       @current-change="handleCurrentChange"
       :current-page="currentPage"
       layout="total, prev, pager, next, jumper"
@@ -19,7 +20,7 @@ export default {
   },
   data() {
     return {
-      currentPage: 4,
+      currentPage: 1,
     };
   },
 };

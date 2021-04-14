@@ -158,7 +158,7 @@ export default {
   min-height: 900px;
 }
 .main-part {
-  height: 900px;
+  max-height: 900px;
   overflow: auto;
 }
 .item {

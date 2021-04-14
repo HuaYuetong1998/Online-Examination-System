@@ -8,6 +8,7 @@ import VueWechatTitle from 'vue-wechat-title'
 import VueCookies from 'vue-cookies'
 import Axios from 'axios'
 import Vuex from 'vuex'
+import 'default-passive-events'
 
 Vue.use(VueWechatTitle)
 Vue.use(Vuex)

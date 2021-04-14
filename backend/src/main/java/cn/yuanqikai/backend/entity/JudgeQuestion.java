@@ -3,7 +3,7 @@ package cn.yuanqikai.backend.entity;
 public class JudgeQuestion {
     private Integer questionId;
 
-    private String subject;
+    private Integer subjectId;
 
     private String question;
 
@@ -11,7 +11,7 @@ public class JudgeQuestion {
 
     private String analysis;
 
-    private String score;
+    private Integer score;
 
     private Integer level;
 
@@ -23,12 +23,12 @@ public class JudgeQuestion {
         this.questionId = questionId;
     }
 
-    public String getSubject() {
-        return subject;
+    public Integer getSubjectId() {
+        return subjectId;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject == null ? null : subject.trim();
+    public void setSubjectId(Integer subjectId) {
+        this.subjectId = subjectId;
     }
 
     public String getQuestion() {
@@ -55,12 +55,12 @@ public class JudgeQuestion {
         this.analysis = analysis == null ? null : analysis.trim();
     }
 
-    public String getScore() {
+    public Integer getScore() {
         return score;
     }
 
-    public void setScore(String score) {
-        this.score = score == null ? null : score.trim();
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
     public Integer getLevel() {
