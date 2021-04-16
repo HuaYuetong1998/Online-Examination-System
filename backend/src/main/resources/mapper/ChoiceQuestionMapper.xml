@@ -56,6 +56,43 @@
       </if>
     </if>
   </select>
+  <select id="selectBySubjectIds" parameterType="java.util.List" resultMap="BaseResultMap">
+    SELECT * FROM
+    (SELECT e.question_id,e.subject_id,e.question,e.analysis,e.score,e.level,e.right_answer,
+    choice_question.answer_A,choice_question.answer_B,choice_question.answer_C,
+    choice_question.answer_D FROM (SELECT question_id,subject_id,question,analysis,score,level,right_answer FROM choice_question
+    union SELECT question_id,subject_id,question,analysis,score,level,answer as right_answer FROM fill_question
+    union SELECT question_id,subject_id,question,analysis,score,level,answer as right_answer FROM judge_question
+    union SELECT question_id,subject_id,question,analysis,score,level,answer as right_answer FROM subjective_question) AS e
+    LEFT JOIN choice_question ON e.question_id = choice_question.question_id
+    LEFT JOIN fill_question ON e.question_id = fill_question.question_id
+    LEFT JOIN judge_question ON e.question_id = judge_question.question_id
+    LEFT JOIN subjective_question ON e.question_id = subjective_question.question_id) pools
+    where subject_id in 
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </select>
+  <select id="randomSelectChoice" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from choice_question
+    where subject_id in
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+    order by
+    rand()
+    limit #{num}
+  </select>
+  <select id="countBySubjects" parameterType="java.util.List" resultType="java.lang.Integer">
+    select count(*)
+    from choice_question
+    where subject_id in
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from choice_question
     where question_id = #{questionId,jdbcType=INTEGER}

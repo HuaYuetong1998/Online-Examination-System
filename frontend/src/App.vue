@@ -34,6 +34,7 @@ export default {
 <style>
 * {
   touch-action: pan-y;
+  touch-action: pan-x;
 }
 #app {
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,

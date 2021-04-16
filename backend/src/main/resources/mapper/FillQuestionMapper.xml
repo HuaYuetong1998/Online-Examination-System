@@ -19,6 +19,26 @@
     from fill_question
     where question_id = #{questionId,jdbcType=INTEGER}
   </select>
+  <select id="randomSelectFill" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from fill_question
+    where subject_id in
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+    order by
+    rand()
+    limit #{num}
+  </select>
+  <select id="countBySubjects" parameterType="java.util.List" resultType="java.lang.Integer">
+    select count(*)
+    from fill_question
+    where subject_id in
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from fill_question
     where question_id = #{questionId,jdbcType=INTEGER}

@@ -1,21 +1,16 @@
 package cn.yuanqikai.backend.controller;
 
-import cn.yuanqikai.backend.dto.ChoiceQuestionDTO;
-import cn.yuanqikai.backend.dto.QuestionDTO;
-import cn.yuanqikai.backend.dto.SearchQuestionDTO;
-import cn.yuanqikai.backend.dto.SubjectDTO;
+import cn.yuanqikai.backend.dto.*;
 import cn.yuanqikai.backend.entity.*;
 import cn.yuanqikai.backend.mapper.SubjectMapper;
 import cn.yuanqikai.backend.response.DataResponse;
 import cn.yuanqikai.backend.service.QuestionsPoolService;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +78,10 @@ public class QuestionsPoolController {
                 QuestionDTO questionDTO = new QuestionDTO();
                 questionDTO.setQuestionId(choiceQuestion.getQuestionId());
                 questionDTO.setSubject(subject.getSubjectName());
+                questionDTO.setAnswerA(choiceQuestion.getAnswerA());
+                questionDTO.setAnswerB(choiceQuestion.getAnswerB());
+                questionDTO.setAnswerC(choiceQuestion.getAnswerC());
+                questionDTO.setAnswerD(choiceQuestion.getAnswerD());
                 questionDTO.setRightAnswer(choiceQuestion.getRightAnswer());
                 questionDTO.setAnalysis(choiceQuestion.getAnalysis());
                 questionDTO.setQuestion(choiceQuestion.getQuestion());
@@ -194,5 +193,70 @@ public class QuestionsPoolController {
             return DataResponse.success().msg("删除成功");
         }
         return DataResponse.fail();
+    }
+
+    @PostMapping("/api/question/paperQuestion")
+    public DataResponse selectBySubjectIds(@RequestBody SubjectIdsDTO subjectIdsDTO) {
+        if(subjectIdsDTO.getSubjectIds().isEmpty()){
+            return DataResponse.fail().msg("学科不能为空");
+        }
+        Page<ChoiceQuestion> page = questionsPoolService.selectBySubjectIds(subjectIdsDTO);
+        if (page != null) {
+            Page<QuestionDTO> questionDTOS = new Page<>();
+            for (ChoiceQuestion choiceQuestion : page.getResult()) {
+                Integer subjectId = choiceQuestion.getSubjectId();
+                Subject subject = subjectMapper.selectByPrimaryKey(subjectId);
+                QuestionDTO questionDTO = new QuestionDTO();
+                questionDTO.setQuestionId(choiceQuestion.getQuestionId());
+                questionDTO.setSubject(subject.getSubjectName());
+                questionDTO.setAnswerA(choiceQuestion.getAnswerA());
+                questionDTO.setAnswerB(choiceQuestion.getAnswerB());
+                questionDTO.setAnswerC(choiceQuestion.getAnswerC());
+                questionDTO.setAnswerD(choiceQuestion.getAnswerD());
+                questionDTO.setRightAnswer(choiceQuestion.getRightAnswer());
+                questionDTO.setAnalysis(choiceQuestion.getAnalysis());
+                questionDTO.setQuestion(choiceQuestion.getQuestion());
+                questionDTO.setScore(choiceQuestion.getScore());
+                questionDTO.setLevel(choiceQuestion.getLevel());
+                questionDTOS.add(questionDTO);
+            }
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("pageData", questionDTOS);
+            map.put("pageTotal", page.getTotal());
+            return DataResponse.success().data(map);
+        }
+
+        return DataResponse.fail();
+    }
+
+    @PostMapping("/api/question/getMax")
+    public DataResponse getMaxQuestionNum(@RequestBody AutoCreatePaperDTO autoCreatePaperDTO) {
+        Integer choiceNum = questionsPoolService.countChoiceBySubject(autoCreatePaperDTO);
+        Integer fillNum = questionsPoolService.countFillBySubject(autoCreatePaperDTO);
+        Integer judgeNum = questionsPoolService.countJudgeBySubject(autoCreatePaperDTO);
+        Integer subjectiveNum = questionsPoolService.countSubjectiveBySubject(autoCreatePaperDTO);
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("choiceNum",choiceNum);
+        map.put("fillNum",fillNum);
+        map.put("judgeNum",judgeNum);
+        map.put("subjectiveNum",subjectiveNum);
+        return DataResponse.success().data(map);
+    }
+
+    @PostMapping("/api/question/autoCreatePaper")
+    public DataResponse autoCreatePaper(@RequestBody AutoCreatePaperDTO autoCreatePaperDTO) {
+        if(autoCreatePaperDTO.getSubjectIds().isEmpty()){
+            return DataResponse.fail().msg("学科为空");
+        }
+        List<ChoiceQuestion> choiceQuestions = questionsPoolService.randomSelectChoice(autoCreatePaperDTO);
+        List<FillQuestion> fillQuestions = questionsPoolService.randomSelectFill(autoCreatePaperDTO);
+        List<JudgeQuestion> judgeQuestions = questionsPoolService.randomSelectJudge(autoCreatePaperDTO);
+        List<SubjectiveQuestion> subjectiveQuestions = questionsPoolService.randomSelectSubjective(autoCreatePaperDTO);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("choiceQuestion",choiceQuestions);
+        map.put("fillQuestion",fillQuestions);
+        map.put("judgeQuestion",judgeQuestions);
+        map.put("subjectiveQuestion",subjectiveQuestions);
+        return DataResponse.success().data(map);
     }
 }

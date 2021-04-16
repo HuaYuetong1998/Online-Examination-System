@@ -1,15 +1,15 @@
 package cn.yuanqikai.backend.service;
 
+import cn.yuanqikai.backend.dto.AutoCreatePaperDTO;
 import cn.yuanqikai.backend.dto.QuestionDTO;
 import cn.yuanqikai.backend.dto.SearchQuestionDTO;
+import cn.yuanqikai.backend.dto.SubjectIdsDTO;
 import cn.yuanqikai.backend.entity.ChoiceQuestion;
 import cn.yuanqikai.backend.entity.FillQuestion;
 import cn.yuanqikai.backend.entity.JudgeQuestion;
 import cn.yuanqikai.backend.entity.SubjectiveQuestion;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 
-import java.awt.*;
 import java.util.List;
 
 /**
@@ -49,4 +49,22 @@ public interface QuestionsPoolService {
     int deleteJudgeQuestion(Integer questionId);
 
     int deleteSubjectiveQuestion(Integer questionId);
+
+    Page<ChoiceQuestion> selectBySubjectIds(SubjectIdsDTO subjectIdsDTO);
+
+    int countChoiceBySubject(AutoCreatePaperDTO autoCreatePaperDTO);
+
+    int countFillBySubject(AutoCreatePaperDTO autoCreatePaperDTO);
+
+    int countJudgeBySubject(AutoCreatePaperDTO autoCreatePaperDTO);
+
+    int countSubjectiveBySubject(AutoCreatePaperDTO autoCreatePaperDTO);
+
+    List<ChoiceQuestion> randomSelectChoice(AutoCreatePaperDTO autoCreatePaperDTO);
+
+    List<FillQuestion> randomSelectFill(AutoCreatePaperDTO autoCreatePaperDTO);
+
+    List<JudgeQuestion> randomSelectJudge(AutoCreatePaperDTO autoCreatePaperDTO);
+
+    List<SubjectiveQuestion> randomSelectSubjective(AutoCreatePaperDTO autoCreatePaperDTO);
 }

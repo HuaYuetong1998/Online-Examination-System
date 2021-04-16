@@ -26,14 +26,14 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="题干：" prop="content">
+            <el-form-item label="题目：" prop="content">
               <el-input
                 type="textarea"
                 v-model="choiceForm.content"
                 style="width: 400px; font-size: 16px"
-                resize="none"
-                autosize
                 maxlength="255"
+                resize="none"
+                :autosize="{ minRows: 1, maxRows: 2 }"
               ></el-input>
             </el-form-item>
 
@@ -110,7 +110,7 @@
                 v-model="choiceForm.analysis"
                 style="width: 400px; font-size: 16px"
                 resize="none"
-                autosize
+                :autosize="{ minRows: 1, maxRows: 2 }"
                 maxlength="255"
               ></el-input>
             </el-form-item>
@@ -168,13 +168,13 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="题干：" prop="content">
+            <el-form-item label="题目：" prop="content">
               <el-input
                 type="textarea"
                 v-model="fillForm.content"
                 style="width: 400px; font-size: 16px"
                 resize="none"
-                autosize
+                :autosize="{ minRows: 1, maxRows: 2 }"
                 maxlength="255"
               ></el-input>
             </el-form-item>
@@ -196,7 +196,7 @@
                 v-model="fillForm.analysis"
                 style="width: 400px; font-size: 16px"
                 resize="none"
-                autosize
+                :autosize="{ minRows: 1, maxRows: 2 }"
                 maxlength="255"
               ></el-input>
             </el-form-item>
@@ -254,13 +254,13 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="题干：" prop="content">
+            <el-form-item label="题目：" prop="content">
               <el-input
                 type="textarea"
                 v-model="judgeForm.content"
                 style="width: 400px; font-size: 16px"
                 resize="none"
-                autosize
+                :autosize="{ minRows: 1, maxRows: 2 }"
                 maxlength="255"
               ></el-input>
             </el-form-item>
@@ -288,7 +288,7 @@
                 v-model="judgeForm.analysis"
                 style="width: 400px; font-size: 16px"
                 resize="none"
-                autosize
+                :autosize="{ minRows: 1, maxRows: 2 }"
                 maxlength="255"
               ></el-input>
             </el-form-item>
@@ -346,13 +346,13 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="题干：" prop="content">
+            <el-form-item label="题目：" prop="content">
               <el-input
                 type="textarea"
                 v-model="subjectiveForm.content"
                 style="width: 400px; font-size: 16px"
                 resize="none"
-                autosize
+                :autosize="{ minRows: 1, maxRows: 2 }"
                 maxlength="255"
               ></el-input>
             </el-form-item>
@@ -374,7 +374,7 @@
                 v-model="subjectiveForm.analysis"
                 style="width: 400px; font-size: 16px"
                 resize="none"
-                autosize
+                :autosize="{ minRows: 1, maxRows: 2 }"
                 maxlength="255"
               ></el-input>
             </el-form-item>

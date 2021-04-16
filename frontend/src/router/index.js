@@ -100,9 +100,18 @@ const routes = [
         }
       },
       {
-        path: 'paper',
-        name: 'paper',
+        path: 'paperManage',
+        name: 'paperManage',
         component: () => import('../components/manage/PaperManage.vue'),
+        meta:{
+          title:'软工综合测试系统',
+          keepAlive: true
+        }
+      },
+      {
+        path: 'addPaper',
+        name: 'addPaper',
+        component: () => import('../components/manage/AddPaper.vue'),
         meta:{
           title:'软工综合测试系统',
           keepAlive: true

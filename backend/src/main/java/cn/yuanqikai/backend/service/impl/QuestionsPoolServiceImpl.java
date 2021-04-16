@@ -1,13 +1,14 @@
 package cn.yuanqikai.backend.service.impl;
 
+import cn.yuanqikai.backend.dto.AutoCreatePaperDTO;
 import cn.yuanqikai.backend.dto.QuestionDTO;
 import cn.yuanqikai.backend.dto.SearchQuestionDTO;
+import cn.yuanqikai.backend.dto.SubjectIdsDTO;
 import cn.yuanqikai.backend.entity.*;
 import cn.yuanqikai.backend.mapper.*;
 import cn.yuanqikai.backend.service.QuestionsPoolService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -146,5 +147,51 @@ public class QuestionsPoolServiceImpl implements QuestionsPoolService {
     @Override
     public int deleteSubjectiveQuestion(Integer questionId) {
         return subjectiveQuestionMapper.deleteByPrimaryKey(questionId);
+    }
+
+    @Override
+    public Page<ChoiceQuestion> selectBySubjectIds(SubjectIdsDTO subjectIdsDTO) {
+        PageHelper.startPage(subjectIdsDTO.getCurrentPage(), subjectIdsDTO.getPageSize());
+        return choiceQuestionMapper.selectBySubjectIds(subjectIdsDTO.getSubjectIds());
+    }
+
+    @Override
+    public int countChoiceBySubject(AutoCreatePaperDTO autoCreatePaperDTO) {
+        return choiceQuestionMapper.countBySubjects(autoCreatePaperDTO.getSubjectIds());
+    }
+
+    @Override
+    public int countFillBySubject(AutoCreatePaperDTO autoCreatePaperDTO) {
+        return fillQuestionMapper.countBySubjects(autoCreatePaperDTO.getSubjectIds());
+    }
+
+    @Override
+    public int countJudgeBySubject(AutoCreatePaperDTO autoCreatePaperDTO) {
+        return judgeQuestionMapper.countBySubjects(autoCreatePaperDTO.getSubjectIds());
+    }
+
+    @Override
+    public int countSubjectiveBySubject(AutoCreatePaperDTO autoCreatePaperDTO) {
+        return subjectiveQuestionMapper.countBySubjects(autoCreatePaperDTO.getSubjectIds());
+    }
+
+    @Override
+    public List<ChoiceQuestion> randomSelectChoice(AutoCreatePaperDTO autoCreatePaperDTO) {
+        return choiceQuestionMapper.randomSelectChoice(autoCreatePaperDTO.getSubjectIds(),autoCreatePaperDTO.getChoiceNum());
+    }
+
+    @Override
+    public List<FillQuestion> randomSelectFill(AutoCreatePaperDTO autoCreatePaperDTO) {
+        return fillQuestionMapper.randomSelectFill(autoCreatePaperDTO.getSubjectIds(),autoCreatePaperDTO.getFillNum());
+    }
+
+    @Override
+    public List<JudgeQuestion> randomSelectJudge(AutoCreatePaperDTO autoCreatePaperDTO) {
+        return judgeQuestionMapper.randomSelectJudge(autoCreatePaperDTO.getSubjectIds(),autoCreatePaperDTO.getJudgeNum());
+    }
+
+    @Override
+    public List<SubjectiveQuestion> randomSelectSubjective(AutoCreatePaperDTO autoCreatePaperDTO) {
+        return subjectiveQuestionMapper.randomSelectSubjective(autoCreatePaperDTO.getSubjectIds(),autoCreatePaperDTO.getSubjectiveNum());
     }
 }

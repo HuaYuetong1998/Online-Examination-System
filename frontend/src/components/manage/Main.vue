@@ -46,8 +46,9 @@
             <span>试卷管理</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="/manage/paper">添加试卷</el-menu-item>
-            <el-menu-item index="2">发布试卷</el-menu-item>
+            <el-menu-item index="/manage/addPaper">添加试卷</el-menu-item>
+            <el-menu-item index="/manage/paperManage">查看试卷</el-menu-item>
+            <el-menu-item index="/manage/paperManage">发布试卷</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-submenu class="item" index="3">
@@ -133,6 +134,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+html {
+  overflow-x: auto;
+  overflow-y: auto;
+}
 .container {
   display: flex;
   justify-content: flex-start;
@@ -158,7 +163,7 @@ export default {
   min-height: 900px;
 }
 .main-part {
-  max-height: 900px;
+  height: 1500px;
   overflow: auto;
 }
 .item {
