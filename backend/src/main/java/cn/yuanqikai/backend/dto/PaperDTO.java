@@ -1,6 +1,9 @@
 package cn.yuanqikai.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author yuanqikai
@@ -10,6 +13,8 @@ public class PaperDTO {
     private Integer paperId;
 
     private String paperTitle;
+
+    private List<QuestionDTO> paperQuestion;
 
     private Integer choiceNum;
 
@@ -41,9 +46,15 @@ public class PaperDTO {
 
     private Integer type;
 
+    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 
+    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
+
+    private Integer currentPage;
+
+    private Integer pageSize;
 
     public Integer getPaperId() {
         return paperId;
@@ -59,6 +70,14 @@ public class PaperDTO {
 
     public void setPaperTitle(String paperTitle) {
         this.paperTitle = paperTitle;
+    }
+
+    public List<QuestionDTO> getPaperQuestion() {
+        return paperQuestion;
+    }
+
+    public void setPaperQuestion(List<QuestionDTO> paperQuestion) {
+        this.paperQuestion = paperQuestion;
     }
 
     public Integer getChoiceNum() {
@@ -195,5 +214,21 @@ public class PaperDTO {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(Integer currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 }

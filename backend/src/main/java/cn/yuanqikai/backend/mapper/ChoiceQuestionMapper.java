@@ -29,4 +29,6 @@ public interface ChoiceQuestionMapper {
     List<ChoiceQuestion> randomSelectChoice(@Param("list") List<Integer> subjectIds, @Param("num") Integer Num);
 
     int countBySubjects(List<Integer> subjectIds);
+
+    ChoiceQuestion selectQuestionDetail(Integer questionId);
 }

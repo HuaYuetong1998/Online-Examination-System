@@ -28,4 +28,13 @@
       </if>
     </trim>
   </insert>
+  <select id="selectPaperQuestionIds" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select question_id
+    from paper_question_pool
+    where paper_id = #{paperId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPaperId" parameterType="java.lang.Integer">
+    delete from paper_question_pool
+    where paper_id = #{paperId,jdbcType=INTEGER}
+  </delete>
 </mapper>

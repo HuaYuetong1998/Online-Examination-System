@@ -1,5 +1,7 @@
 package cn.yuanqikai.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Paper {
@@ -29,8 +31,10 @@ public class Paper {
 
     private Integer type;
 
+    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 
+    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
 
     public Integer getPaperId() {
