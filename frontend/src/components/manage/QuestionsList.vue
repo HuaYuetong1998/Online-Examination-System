@@ -97,30 +97,30 @@
           </el-table-column>
           <el-table-column prop="level" label="难易度" width="150">
           </el-table-column>
-          <el-table-column fixed="right" label="操作" width="250">
+          <el-table-column fixed="right" label="操作" width="260">
             <template slot-scope="scope">
               <el-button
+                icon="el-icon-info"
                 @click.native.prevent="showDetail(scope.$index, resultData)"
                 type="primary"
                 size="small"
+                >详情</el-button
               >
-                详细信息
-              </el-button>
               <el-button
+                icon="el-icon-edit"
                 @click.native.prevent="showModify(scope.$index, resultData)"
                 type="success"
                 size="small"
+                >修改</el-button
               >
-                修改
-              </el-button>
 
               <el-button
+                icon="el-icon-delete"
                 @click.native.prevent="deleteRow(scope.$index, resultData)"
                 type="danger"
                 size="small"
+                >删除</el-button
               >
-                删除
-              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -390,9 +390,7 @@ export default {
       let subjects = res.data.data;
       this.subjects = subjects;
     });
-    setTimeout(() => {
-      this.searchList();
-    }, 200);
+    this.searchList();
   },
   data() {
     return {
@@ -653,7 +651,7 @@ export default {
               this.reload();
             });
           } else if (questionId >= 200000 && questionId < 300000) {
-              axios({
+            axios({
               method: "get",
               url: "/api/fillQuestion/delete",
               params: {
@@ -667,7 +665,7 @@ export default {
               this.reload();
             });
           } else if (questionId >= 300000 && questionId < 400000) {
-              axios({
+            axios({
               method: "get",
               url: "/api/judgeQuestion/delete",
               params: {
@@ -681,7 +679,7 @@ export default {
               this.reload();
             });
           } else if (questionId >= 400000) {
-              axios({
+            axios({
               method: "get",
               url: "/api/subjectiveQuestion/delete",
               params: {

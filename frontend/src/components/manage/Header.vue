@@ -80,7 +80,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .header-wrapper {
   height: 80px;
   border-bottom: 1px solid orange;

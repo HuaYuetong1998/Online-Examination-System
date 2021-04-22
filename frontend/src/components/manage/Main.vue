@@ -48,7 +48,7 @@
           <el-menu-item-group>
             <el-menu-item index="/manage/addPaper">添加试卷</el-menu-item>
             <el-menu-item index="/manage/paperManage">查看试卷</el-menu-item>
-            <el-menu-item index="/manage/paperManage">发布试卷</el-menu-item>
+            <el-menu-item index="/manage/addExam">发布考试</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-submenu class="item" index="3">

@@ -219,7 +219,14 @@
 
             <div class="right-answer">
               <span>标准答案:</span
-              ><span style="margin-left: 10px">{{ item.answer }}</span>
+              ><span
+                style="margin-left: 10px"
+                v-if="item.questionId >= 100000 && item.questionId < 200000"
+                >{{ item.rightAnswer }}</span
+              >
+              <span style="margin-left: 10px" v-else>
+                {{ item.answer }}
+              </span>
             </div>
             <div class="level" style="display: flex; flex-direction: row">
               <span>难度：</span>
@@ -383,6 +390,7 @@
 import axios from "axios";
 
 export default {
+  inject: ["reload"],
   created: function () {
     axios({
       method: "post",
@@ -673,6 +681,7 @@ export default {
       };
     },
 
+    //清空试卷
     clearPaper() {
       this.paperQuestion = [];
       this.paperForm.paperName = "";
@@ -689,6 +698,7 @@ export default {
       this.toggleSelection();
     },
 
+    //根据学科加载出现有最大题目数
     loadMaxQuestionNum() {
       if (this.isAuto) {
         if (this.subjectIds.length == 0) {
@@ -718,6 +728,7 @@ export default {
       }
     },
 
+    //随机组卷
     randomPaper() {
       if (this.subjectIds.length === 0) {
         this.$message({
@@ -782,6 +793,7 @@ export default {
       }
     },
 
+    //创建试卷
     createPaper() {
       if (this.paperForm.paperName === "") {
         this.$message({
@@ -795,6 +807,63 @@ export default {
             showClose: true,
             message: "试卷还未添加题目",
             type: "error",
+          });
+        } else {
+          let type = 0;
+          if (this.isAuto) {
+            type = 1;
+          }
+          axios({
+            methos: "get",
+            url: "/api/paper/isExist",
+            params: {
+              paperTitle: this.paperForm.paperName,
+            },
+          }).then((res) => {
+            if (res.status === 200) {
+              console.log(res);
+              if (res.data.msg === "试卷已存在") {
+                this.$message({
+                  showClose: true,
+                  message: "试卷名已存在",
+                  type: "error",
+                });
+              } else {
+                axios({
+                  method: "post",
+                  url: "/api/paper/add",
+                  data: {
+                    paperTitle: this.paperForm.paperName,
+                    choiceNum: this.intellPaperForm.choiceNum,
+                    fillNum: this.intellPaperForm.fillNum,
+                    judgeNum: this.intellPaperForm.judgeNum,
+                    subjectiveNum: this.intellPaperForm.subjectiveNum,
+                    normalChoiceNum: this.intellPaperForm.normalChoiceNum,
+                    normalFillNum: this.intellPaperForm.normalFillNum,
+                    normalJudgeNum: this.intellPaperForm.normalJudgeNum,
+                    normalSubjectiveNum: this.intellPaperForm
+                      .normalSubjectiveNum,
+                    choiceScore: this.intellPaperForm.choiceScore,
+                    fillScore: this.intellPaperForm.fillScore,
+                    judgeScore: this.intellPaperForm.judgeScore,
+                    subjectiveScore: this.intellPaperForm.subjectiveScore,
+                    totalScore: this.paperForm.totalScore,
+                    type: type,
+                    paperQuestion: this.paperQuestion,
+                  },
+                }).then((res) => {
+                  if (res.status === 200) {
+                    let result = res.data.data;
+                    this.$message({
+                      showClose: true,
+                      message: "试卷创建成功",
+                      type: "success",
+                    });
+                    this.reload();
+                  }
+                });
+              }
+            }
           });
         }
       }

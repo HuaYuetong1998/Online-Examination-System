@@ -109,6 +109,15 @@ const routes = [
         }
       },
       {
+        path: 'addExam',
+        name: 'addExam',
+        component: () => import('../components/manage/AddExam.vue'),
+        meta:{
+          title:'软工综合测试系统',
+          keepAlive: true
+        }
+      },
+      {
         path: 'addPaper',
         name: 'addPaper',
         component: () => import('../components/manage/AddPaper.vue'),
@@ -181,7 +190,7 @@ router.beforeEach((to, from, next) => {
     sessionStorage.removeItem("token")
     next();
   } else {
-    let token = Cookies.get('token')  
+    let token = Cookies.get('token')
     if (token === null || token === '') {
       next('/login');
     } else {
