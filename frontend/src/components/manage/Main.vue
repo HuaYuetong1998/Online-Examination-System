@@ -2,7 +2,7 @@
   <el-row :span="24" class="container">
     <el-col class="menu-col" :span="6">
       <el-menu
-        default-active="1-4-1"
+        :default-active="$router.currentRoute.path"
         class="el-menu-vertical-demo sideBar"
         @open="handleOpen"
         @close="handleClose"
@@ -57,10 +57,12 @@
             <span>学生管理</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="/manage/studentManage"
-              >添加学生信息</el-menu-item
+            <el-menu-item index="/manage/studentInfo"
+              >查看学生信息</el-menu-item
             >
-            <el-menu-item index="2">查看学生信息</el-menu-item>
+            <el-menu-item index="/manage/studentManage"
+              >查看学生成绩</el-menu-item
+            >
           </el-menu-item-group>
         </el-submenu>
         <el-submenu class="item" index="4">
@@ -71,6 +73,17 @@
           <el-menu-item-group>
             <el-menu-item index="/manage/score">查看成绩</el-menu-item>
             <el-menu-item index="2">查看题库</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+
+        <el-submenu class="item" index="5">
+          <template slot="title">
+            <i class="el-icon-data-line"></i>
+            <span>班级管理</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="/manage/classManage">班级管理</el-menu-item>
+            <el-menu-item index="/manage/classDetail">班级详情</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
 

@@ -972,22 +972,35 @@ export default {
 
     deletePaper(index, rows) {
       let currentId = rows[index].paperId;
-      axios({
-        method: "get",
-        url: "/api/paper/delete",
-        params: {
-          paperId: currentId,
-        },
-      }).then((res) => {
-        if (res.status === 200) {
-          this.$message({
-            message: "删除成功！",
-            type: "success",
+      this.$confirm("此操作将永久删除该试卷，是否继续？", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          axios({
+            method: "get",
+            url: "/api/paper/delete",
+            params: {
+              paperId: currentId,
+            },
+          }).then((res) => {
+            if (res.status === 200) {
+              this.$message({
+                message: "删除成功！",
+                type: "success",
+              });
+              this.searchPaper();
+              return;
+            }
           });
-          this.searchPaper();
-          return;
-        }
-      });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
 };

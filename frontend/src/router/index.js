@@ -91,6 +91,15 @@ const routes = [
         }
       },
       {
+        path: 'studentInfo',
+        name: 'studentInfo',
+        component: () => import('../components/manage/StudentInfo.vue'),
+        meta:{
+          title:'软工综合测试系统',
+          keepAlive: true
+        }
+      },
+      {
         path: 'studentManage',
         name: 'studentManage',
         component: () => import('../components/manage/StudentManage.vue'),
@@ -148,6 +157,24 @@ const routes = [
         path: 'score',
         name: 'scoreManage',
         component: () => import('../components/manage/ScoreManage.vue'),
+        meta:{
+          title:'软工综合测试系统',
+          keepAlive: true
+        }
+      },
+      {
+        path: 'classManage',
+        name: 'classManage',
+        component: () => import('../components/manage/ClassManage.vue'),
+        meta:{
+          title:'软工综合测试系统',
+          keepAlive: true
+        }
+      },
+      {
+        path: 'classDetail',
+        name: 'classDetail',
+        component: () => import('../components/manage/ClassDetail.vue'),
         meta:{
           title:'软工综合测试系统',
           keepAlive: true
