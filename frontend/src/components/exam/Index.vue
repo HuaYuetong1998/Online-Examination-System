@@ -111,7 +111,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .main-wrapper {
   display: flex;
   justify-content: center;

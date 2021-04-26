@@ -72,7 +72,6 @@
           </template>
           <el-menu-item-group>
             <el-menu-item index="/manage/score">查看成绩</el-menu-item>
-            <el-menu-item index="2">查看题库</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
 
@@ -102,10 +101,16 @@
 
 <script>
 export default {
+  created: function () {
+    this.watchRole();
+  },
   data() {
     return {
       isCollapse: false,
       time: "",
+      role: this.$cookies.get("role"),
+      isAdmin: false,
+      isTeacher: false,
     };
   },
   methods: {
@@ -133,6 +138,25 @@ export default {
           ? "0" + new Date().getSeconds()
           : new Date().getSeconds();
       that.time = yy + "年" + mm + "月" + dd + "日 " + hh + ":" + mf + ":" + ss;
+    },
+    watchRole() {
+      if (this.role != null) {
+        console.log(this.role);
+        if (this.role === "0") {
+          this.isAdmin = true;
+        } else if (this.role === "1") {
+          this.isTeacher = true;
+        } else {
+          this.$message({
+            showClose: true,
+            message: "您没有权限访问!",
+            type: "error",
+          });
+          this.$router.push({ path: "/student/index" });
+        }
+      } else {
+        this.$router.push({ path: "/login" });
+      }
     },
   },
   mounted() {

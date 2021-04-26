@@ -1,6 +1,7 @@
 package cn.yuanqikai.backend.mapper;
 
 import cn.yuanqikai.backend.entity.User;
+import com.github.pagehelper.Page;
 
 public interface UserMapper {
     int deleteByPrimaryKey(Integer userId);
@@ -18,4 +19,6 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    Page<User> selectStudentUser();
 }

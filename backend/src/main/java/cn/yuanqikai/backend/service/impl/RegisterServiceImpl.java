@@ -1,5 +1,7 @@
 package cn.yuanqikai.backend.service.impl;
 
+import cn.yuanqikai.backend.entity.StudentInfo;
+import cn.yuanqikai.backend.mapper.StudentInfoMapper;
 import cn.yuanqikai.backend.mapper.UserMapper;
 import cn.yuanqikai.backend.entity.User;
 import cn.yuanqikai.backend.exception.UserException;
@@ -21,6 +23,9 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    StudentInfoMapper studentInfoMapper;
 
     @Override
     public void register(RegisterVO registerVO) {
@@ -52,6 +57,16 @@ public class RegisterServiceImpl implements RegisterService {
         user.setUpdateTime(today);
 
         userMapper.insert(user);
+
+        //如果是学生，注册信息到student_info
+        if (role == 2) {
+            StudentInfo studentInfo = new StudentInfo();
+            studentInfo.setRealName(realName);
+            studentInfo.setGender(gender);
+            studentInfo.setTel(tel);
+            studentInfo.setEmail(email);
+            studentInfoMapper.insert(studentInfo);
+        }
     }
 
     @Override

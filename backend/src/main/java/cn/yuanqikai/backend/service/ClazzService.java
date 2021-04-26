@@ -24,4 +24,6 @@ public interface ClazzService {
     int deleteById(Integer classId);
 
     int updateClazz(Clazz clazz);
+
+
 }

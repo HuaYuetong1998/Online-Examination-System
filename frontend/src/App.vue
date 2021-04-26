@@ -58,4 +58,7 @@ body .el-table th.gutter {
 .el-popup-parent--hidden {
   padding-right: 0 !important;
 }
+body {
+  overflow: auto;
+}
 </style>

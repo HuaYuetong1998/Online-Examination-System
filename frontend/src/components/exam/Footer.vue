@@ -22,7 +22,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .footerWrapper {
   margin-top: 30px;
   width: 100%;
