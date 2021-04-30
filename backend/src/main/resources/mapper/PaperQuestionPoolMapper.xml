@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.yuanqikai.backend.mapper.PaperQuestionPoolMapper">
+  <resultMap id="BaseResultMap" type="cn.yuanqikai.backend.entity.PaperQuestionPool">
+    <result column="paper_id" jdbcType="INTEGER" property="paperId" />
+    <result column="question_id" jdbcType="INTEGER" property="questionId" />
+  </resultMap>
+  <insert id="insert" parameterType="cn.yuanqikai.backend.entity.PaperQuestionPool">
+    insert into paper_question_pool (paper_id, question_id)
+    values (#{paperId,jdbcType=INTEGER}, #{questionId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.yuanqikai.backend.entity.PaperQuestionPool">
+    insert into paper_question_pool
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="paperId != null">
+        paper_id,
+      </if>
+      <if test="questionId != null">
+        question_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="paperId != null">
+        #{paperId,jdbcType=INTEGER},
+      </if>
+      <if test="questionId != null">
+        #{questionId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectPaperQuestionIds" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select question_id
+    from paper_question_pool
+    where paper_id = #{paperId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPaperId" parameterType="java.lang.Integer">
+    delete from paper_question_pool
+    where paper_id = #{paperId,jdbcType=INTEGER}
+  </delete>
+</mapper>

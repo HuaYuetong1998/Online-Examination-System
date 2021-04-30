@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.yuanqikai.backend.mapper.ChoiceQuestionMapper">
+  <resultMap id="BaseResultMap" type="cn.yuanqikai.backend.entity.ChoiceQuestion">
+    <id column="question_id" jdbcType="INTEGER" property="questionId" />
+    <result column="subject_id" jdbcType="INTEGER" property="subjectId" />
+    <result column="question" jdbcType="VARCHAR" property="question" />
+    <result column="answer_A" jdbcType="VARCHAR" property="answerA" />
+    <result column="answer_B" jdbcType="VARCHAR" property="answerB" />
+    <result column="answer_C" jdbcType="VARCHAR" property="answerC" />
+    <result column="answer_D" jdbcType="VARCHAR" property="answerD" />
+    <result column="right_answer" jdbcType="VARCHAR" property="rightAnswer" />
+    <result column="analysis" jdbcType="VARCHAR" property="analysis" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    question_id, subject_id, question, answer_A, answer_B, answer_C, answer_D, right_answer, 
+    analysis, score, level
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from choice_question
+    where question_id = #{questionId,jdbcType=INTEGER}
+  </select>
+  <select id="selectMultiCondition" parameterType="cn.yuanqikai.backend.dto.SearchQuestionDTO" resultMap="BaseResultMap">
+    select
+    question_id,subject_id,question,right_answer,analysis,score,level
+    from (select question_id,subject_id,question,right_answer,analysis,score,level from choice_question
+    union all select question_id,subject_id,question,answer as right_answer,analysis,score,level from fill_question
+    union all select question_id,subject_id,question,answer as right_answer,analysis,score,level from judge_question
+    union all select question_id,subject_id,question,answer as right_answer,analysis,score,level from subjective_question
+    ) as question_pool where 1 = 1
+    <if test="questionId != null and questionId !=''">
+      and question_id = #{questionId,jdbcType=INTEGER}
+    </if>
+    <if test="subjectId != null and subjectId !=''">
+      and subject_id = #{subjectId,jdbcType=INTEGER}
+    </if>
+    <if test="question != null and question !=''">
+      and question like #{question,jdbcType=VARCHAR}
+    </if>
+    <if test="questionType != null and questionType != ''">
+      <if test="questionType == '选择题'">
+        and (question_id &gt;= 100000 and question_id &lt; 200000)
+      </if>
+      <if test="questionType == '填空题'">
+        and (question_id &gt;= 200000 and question_id &lt; 300000)
+      </if>
+      <if test="questionType == '判断题'">
+        and (question_id &gt;= 300000 and question_id &lt; 400000)
+      </if>
+      <if test="questionType == '主观题'">
+        and question_id &gt;= 400000
+      </if>
+    </if>
+  </select>
+  <select id="selectBySubjectIds" parameterType="java.util.List" resultMap="BaseResultMap">
+    SELECT * FROM
+    (SELECT e.question_id,e.subject_id,e.question,e.analysis,e.score,e.level,e.right_answer,
+    choice_question.answer_A,choice_question.answer_B,choice_question.answer_C,
+    choice_question.answer_D FROM (SELECT question_id,subject_id,question,analysis,score,level,right_answer FROM choice_question
+    union SELECT question_id,subject_id,question,analysis,score,level,answer as right_answer FROM fill_question
+    union SELECT question_id,subject_id,question,analysis,score,level,answer as right_answer FROM judge_question
+    union SELECT question_id,subject_id,question,analysis,score,level,answer as right_answer FROM subjective_question) AS e
+    LEFT JOIN choice_question ON e.question_id = choice_question.question_id
+    LEFT JOIN fill_question ON e.question_id = fill_question.question_id
+    LEFT JOIN judge_question ON e.question_id = judge_question.question_id
+    LEFT JOIN subjective_question ON e.question_id = subjective_question.question_id) pools
+    where subject_id in 
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </select>
+  <select id="selectQuestionDetail" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT * FROM
+    (SELECT e.question_id,e.subject_id,e.question,e.analysis,e.score,e.level,e.right_answer,
+    choice_question.answer_A,choice_question.answer_B,choice_question.answer_C,
+    choice_question.answer_D FROM (SELECT question_id,subject_id,question,analysis,score,level,right_answer FROM choice_question
+    union SELECT question_id,subject_id,question,analysis,score,level,answer as right_answer FROM fill_question
+    union SELECT question_id,subject_id,question,analysis,score,level,answer as right_answer FROM judge_question
+    union SELECT question_id,subject_id,question,analysis,score,level,answer as right_answer FROM subjective_question) AS e
+    LEFT JOIN choice_question ON e.question_id = choice_question.question_id
+    LEFT JOIN fill_question ON e.question_id = fill_question.question_id
+    LEFT JOIN judge_question ON e.question_id = judge_question.question_id
+    LEFT JOIN subjective_question ON e.question_id = subjective_question.question_id) pools
+    where question_id = #{questionId,jdbcType=INTEGER}
+  </select>
+  <select id="randomSelectChoice" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from choice_question
+    where subject_id in
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+    order by
+    rand()
+    limit #{num}
+  </select>
+  <select id="countBySubjects" parameterType="java.util.List" resultType="java.lang.Integer">
+    select count(*)
+    from choice_question
+    where subject_id in
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from choice_question
+    where question_id = #{questionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.yuanqikai.backend.entity.ChoiceQuestion">
+    insert into choice_question (question_id, subject_id, question, 
+      answer_A, answer_B, answer_C, 
+      answer_D, right_answer, analysis, 
+      score, level)
+    values (#{questionId,jdbcType=INTEGER}, #{subjectId,jdbcType=INTEGER}, #{question,jdbcType=VARCHAR}, 
+      #{answerA,jdbcType=VARCHAR}, #{answerB,jdbcType=VARCHAR}, #{answerC,jdbcType=VARCHAR}, 
+      #{answerD,jdbcType=VARCHAR}, #{rightAnswer,jdbcType=VARCHAR}, #{analysis,jdbcType=VARCHAR}, 
+      #{score,jdbcType=INTEGER}, #{level,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.yuanqikai.backend.entity.ChoiceQuestion">
+    insert into choice_question
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="questionId != null">
+        question_id,
+      </if>
+      <if test="subjectId != null">
+        subject_id,
+      </if>
+      <if test="question != null">
+        question,
+      </if>
+      <if test="answerA != null">
+        answer_A,
+      </if>
+      <if test="answerB != null">
+        answer_B,
+      </if>
+      <if test="answerC != null">
+        answer_C,
+      </if>
+      <if test="answerD != null">
+        answer_D,
+      </if>
+      <if test="rightAnswer != null">
+        right_answer,
+      </if>
+      <if test="analysis != null">
+        analysis,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="questionId != null">
+        #{questionId,jdbcType=INTEGER},
+      </if>
+      <if test="subjectId != null">
+        #{subjectId,jdbcType=INTEGER},
+      </if>
+      <if test="question != null">
+        #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="answerA != null">
+        #{answerA,jdbcType=VARCHAR},
+      </if>
+      <if test="answerB != null">
+        #{answerB,jdbcType=VARCHAR},
+      </if>
+      <if test="answerC != null">
+        #{answerC,jdbcType=VARCHAR},
+      </if>
+      <if test="answerD != null">
+        #{answerD,jdbcType=VARCHAR},
+      </if>
+      <if test="rightAnswer != null">
+        #{rightAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="analysis != null">
+        #{analysis,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.yuanqikai.backend.entity.ChoiceQuestion">
+    update choice_question
+    <set>
+      <if test="subjectId != null">
+        subject_id = #{subjectId,jdbcType=INTEGER},
+      </if>
+      <if test="question != null">
+        question = #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="answerA != null">
+        answer_A = #{answerA,jdbcType=VARCHAR},
+      </if>
+      <if test="answerB != null">
+        answer_B = #{answerB,jdbcType=VARCHAR},
+      </if>
+      <if test="answerC != null">
+        answer_C = #{answerC,jdbcType=VARCHAR},
+      </if>
+      <if test="answerD != null">
+        answer_D = #{answerD,jdbcType=VARCHAR},
+      </if>
+      <if test="rightAnswer != null">
+        right_answer = #{rightAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="analysis != null">
+        analysis = #{analysis,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+    </set>
+    where question_id = #{questionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.yuanqikai.backend.entity.ChoiceQuestion">
+    update choice_question
+    set subject_id = #{subjectId,jdbcType=INTEGER},
+      question = #{question,jdbcType=VARCHAR},
+      answer_A = #{answerA,jdbcType=VARCHAR},
+      answer_B = #{answerB,jdbcType=VARCHAR},
+      answer_C = #{answerC,jdbcType=VARCHAR},
+      answer_D = #{answerD,jdbcType=VARCHAR},
+      right_answer = #{rightAnswer,jdbcType=VARCHAR},
+      analysis = #{analysis,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      level = #{level,jdbcType=INTEGER}
+    where question_id = #{questionId,jdbcType=INTEGER}
+  </update>
+</mapper>
