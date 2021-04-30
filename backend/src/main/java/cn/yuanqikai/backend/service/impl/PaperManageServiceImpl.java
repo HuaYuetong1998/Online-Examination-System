@@ -161,4 +161,9 @@ public class PaperManageServiceImpl implements PaperManageService {
         }
         return 0;
     }
+
+    @Override
+    public List<Paper> selectAllPaper() {
+        return paperMapper.selectAllPaper();
+    }
 }

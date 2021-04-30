@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.yuanqikai.backend.mapper.ExamMapper">
+  <resultMap id="BaseResultMap" type="cn.yuanqikai.backend.entity.Exam">
+    <id column="exam_id" jdbcType="INTEGER" property="examId" />
+    <result column="paper_id" jdbcType="INTEGER" property="paperId" />
+    <result column="exam_title" jdbcType="VARCHAR" property="examTitle" />
+    <result column="time_limit" jdbcType="INTEGER" property="timeLimit" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="over_time" jdbcType="TIMESTAMP" property="overTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="is_random" jdbcType="INTEGER" property="isRandom" />
+    <result column="is_snap" jdbcType="INTEGER" property="isSnap" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    exam_id, paper_id, exam_title, time_limit, start_time, over_time, status, is_random, 
+    is_snap
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from exam_manage
+    where exam_id = #{examId,jdbcType=INTEGER}
+  </select>
+  <select id="selectOnGoingExam" parameterType="java.util.List" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from exam_manage
+    where status = 0 and exam_id in
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </select>
+
+  <select id="selectOveredExam" parameterType="java.util.List" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from exam_manage
+    where status = 1 and exam_id in
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from exam_manage
+    where exam_id = #{examId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.yuanqikai.backend.entity.Exam">
+    insert into exam_manage (exam_id, paper_id, exam_title, 
+      time_limit, start_time, over_time, 
+      status, is_random, is_snap
+      )
+    values (#{examId,jdbcType=INTEGER}, #{paperId,jdbcType=INTEGER}, #{examTitle,jdbcType=VARCHAR}, 
+      #{timeLimit,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, #{overTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER}, #{isRandom,jdbcType=INTEGER}, #{isSnap,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.yuanqikai.backend.entity.Exam" useGeneratedKeys="true" keyProperty="examId">
+    insert into exam_manage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="examId != null">
+        exam_id,
+      </if>
+      <if test="paperId != null">
+        paper_id,
+      </if>
+      <if test="examTitle != null">
+        exam_title,
+      </if>
+      <if test="timeLimit != null">
+        time_limit,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="overTime != null">
+        over_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="isRandom != null">
+        is_random,
+      </if>
+      <if test="isSnap != null">
+        is_snap,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="examId != null">
+        #{examId,jdbcType=INTEGER},
+      </if>
+      <if test="paperId != null">
+        #{paperId,jdbcType=INTEGER},
+      </if>
+      <if test="examTitle != null">
+        #{examTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="timeLimit != null">
+        #{timeLimit,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="overTime != null">
+        #{overTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isRandom != null">
+        #{isRandom,jdbcType=INTEGER},
+      </if>
+      <if test="isSnap != null">
+        #{isSnap,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.yuanqikai.backend.entity.Exam">
+    update exam_manage
+    <set>
+      <if test="paperId != null">
+        paper_id = #{paperId,jdbcType=INTEGER},
+      </if>
+      <if test="examTitle != null">
+        exam_title = #{examTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="timeLimit != null">
+        time_limit = #{timeLimit,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="overTime != null">
+        over_time = #{overTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isRandom != null">
+        is_random = #{isRandom,jdbcType=INTEGER},
+      </if>
+      <if test="isSnap != null">
+        is_snap = #{isSnap,jdbcType=INTEGER},
+      </if>
+    </set>
+    where exam_id = #{examId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.yuanqikai.backend.entity.Exam">
+    update exam_manage
+    set paper_id = #{paperId,jdbcType=INTEGER},
+      exam_title = #{examTitle,jdbcType=VARCHAR},
+      time_limit = #{timeLimit,jdbcType=INTEGER},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      over_time = #{overTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      is_random = #{isRandom,jdbcType=INTEGER},
+      is_snap = #{isSnap,jdbcType=INTEGER}
+    where exam_id = #{examId,jdbcType=INTEGER}
+  </update>
+</mapper>

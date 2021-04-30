@@ -31,7 +31,7 @@
 
       <div class="block">
         <span class="block-title" style="background: rgb(230, 162, 60)"
-          >我的试卷</span
+          >我的考试</span
         >
         <div
           class="block-container"
@@ -54,7 +54,6 @@
                 </ul>
               </el-card>
             </a>
-
             <a href="#" class="urlLink">
               <el-card class="box-card" shadow="hover">
                 <ul>
@@ -102,7 +101,7 @@ export default {
     pageination,
     selectPaper,
   },
-  name: "index",
+  name: "StudentIndex",
   data() {
     return {
       message: "hello",

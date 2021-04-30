@@ -4,6 +4,8 @@ import cn.yuanqikai.backend.dto.PaperDTO;
 import cn.yuanqikai.backend.entity.Paper;
 import com.github.pagehelper.Page;
 
+import java.util.List;
+
 public interface PaperMapper {
     int deleteByPrimaryKey(Integer paperId);
 
@@ -22,4 +24,6 @@ public interface PaperMapper {
     int updateByPrimaryKeySelective(Paper record);
 
     int updateByPrimaryKey(Paper record);
+
+    List<Paper> selectAllPaper();
 }

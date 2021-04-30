@@ -55,6 +55,10 @@
     from paper_manage
     where paper_title = #{paperTitle,jdbcType=VARCHAR}
   </select>
+  <select id="selectAllPaper" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from paper_manage
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from paper_manage
     where paper_id = #{paperId,jdbcType=INTEGER}

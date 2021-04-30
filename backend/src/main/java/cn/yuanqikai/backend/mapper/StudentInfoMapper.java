@@ -21,4 +21,6 @@ public interface StudentInfoMapper {
     Page<StudentInfo> selectAllStudent();
 
     Page<StudentInfo> selectByStudentIds(List<Integer> list);
+
+    StudentInfo selectByTel(String tel);
 }

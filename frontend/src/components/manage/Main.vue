@@ -57,10 +57,10 @@
             <span>学生管理</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="/manage/studentInfo"
+            <el-menu-item index="/manage/studentManage"
               >查看学生信息</el-menu-item
             >
-            <el-menu-item index="/manage/studentManage"
+            <el-menu-item index="/manage/studentInfo"
               >查看学生成绩</el-menu-item
             >
           </el-menu-item-group>

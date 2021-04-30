@@ -143,9 +143,6 @@ export default {
   },
   created: function () {
     this.initClassInfo();
-    if (this.detailForm.classId != "" && this.detailForm.classId != null) {
-      this.searchClassList();
-    }
   },
   methods: {
     initClassInfo() {

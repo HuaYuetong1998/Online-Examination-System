@@ -20,6 +20,8 @@ public class UserLoginDTO {
 
     private String token;
 
+    private Integer studentId;
+
     public Integer getUserId() {
         return userId;
     }
@@ -66,6 +68,14 @@ public class UserLoginDTO {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Integer getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
     }
 
     public String toString() {

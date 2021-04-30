@@ -32,4 +32,6 @@ public interface PaperManageService {
     void updatePaperQuestionPool(PaperDTO paperDTO);
 
     int deletePaper(Integer paperId);
+
+    List<Paper> selectAllPaper();
 }

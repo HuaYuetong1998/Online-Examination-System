@@ -75,7 +75,7 @@ export default {
             this.$store.state.hasLogin = true;
             let resData = res.data.data;
             if (resData != null) {
-              let expireTimes = 60 * 60;
+              let expireTimes = 24 * 60 * 60;
               switch (resData.role) {
                 case 0:
                   this.$cookies.set(
@@ -151,6 +151,15 @@ export default {
                   break;
                 default:
                   console.log("role的数值出错了");
+              }
+
+              if (resData.studentId != null) {
+                this.$cookies.set(
+                  "studentId",
+                  resData.studentId,
+                  expireTimes,
+                  "/"
+                );
               }
             }
           }

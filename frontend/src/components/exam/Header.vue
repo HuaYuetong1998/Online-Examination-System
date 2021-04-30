@@ -158,11 +158,11 @@ a:visited {
   margin-right: 20px;
 }
 .header .nav-item:last-child {
-  width: 120px;
+  width: 150px;
   margin-right: 0;
 }
 .header .el-dropdown {
-  width: 120px;
+  width: 150px;
 }
 
 .header .nav-item:hover {

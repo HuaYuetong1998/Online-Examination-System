@@ -3,10 +3,12 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+
 export default new Vuex.Store({
   state: {
     hasLogin:false,
-    highLightTabName:''
+    highLightTabName:'',
+    remainTime:localStorage.getItem("remainSecond"),
   },
   mutations: {
     changeLoginStatus: state => {
@@ -18,7 +20,7 @@ export default new Vuex.Store({
     },
     changeTab(state,tabName) {
       state.highLightTabName = tabName
-    }
+    },
   },
   actions: {
   },

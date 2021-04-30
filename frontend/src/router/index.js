@@ -42,7 +42,7 @@ const routes = [
   },
   {
     path: '/student/index', //学生主页
-    name: 'studentIndex',
+    name: 'index',
     component: () => import('../views/Index.vue'),
     meta:{
       title:'软工综合测试系统',
@@ -74,6 +74,15 @@ const routes = [
     meta:{
       title:'我的成绩',
       keepAlive: true
+    }
+  },
+  {
+    path: '/examPage',
+    name: 'examPage', 
+    component: () => import('../views/ExamPage.vue'),
+    meta:{
+      title:'考试界面',
+      keepAlive:false
     }
   },
   {

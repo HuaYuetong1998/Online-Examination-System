@@ -125,6 +125,7 @@
           </el-table-column>
         </el-table>
       </div>
+
       <!-- 分页 -->
       <div class="pageination">
         <el-pagination
@@ -847,5 +848,13 @@ export default {
 .item {
   margin-top: 10px;
   margin-right: 10px;
+}
+.el-scrollbar__wrap {
+  overflow-x: auto;
+  height: calc(100% + 20px);
+}
+.el-scrollbar .el-scrollbar__wrap .el-scrollbar__view {
+  white-space: nowrap;
+  display: inline-block;
 }
 </style>

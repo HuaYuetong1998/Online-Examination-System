@@ -1,6 +1,7 @@
 package cn.yuanqikai.backend.controller;
 
 import cn.yuanqikai.backend.dto.PaperDTO;
+import cn.yuanqikai.backend.dto.PaperListDTO;
 import cn.yuanqikai.backend.dto.QuestionDTO;
 import cn.yuanqikai.backend.entity.ChoiceQuestion;
 import cn.yuanqikai.backend.entity.Paper;
@@ -112,5 +113,18 @@ public class PaperManageController {
             return DataResponse.success();
         }
         return DataResponse.fail();
+    }
+
+    @PostMapping("/api/paper/getAll")
+    public DataResponse getAllPaper() {
+        List<Paper> papers = paperManageService.selectAllPaper();
+        ArrayList<PaperListDTO> paperList = new ArrayList<>();
+        for(Paper paper : papers) {
+            PaperListDTO paperListDTO = new PaperListDTO();
+            paperListDTO.setPaperTitle(paper.getPaperTitle());
+            paperListDTO.setPaperId(paper.getPaperId());
+            paperList.add(paperListDTO);
+        }
+        return DataResponse.success().data(paperList);
     }
 }

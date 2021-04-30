@@ -1,5 +1,6 @@
 package cn.yuanqikai.backend.controller;
 
+import cn.yuanqikai.backend.dto.ClassListDTO;
 import cn.yuanqikai.backend.entity.Clazz;
 import cn.yuanqikai.backend.response.DataResponse;
 import cn.yuanqikai.backend.service.ClazzService;
@@ -90,5 +91,19 @@ public class ClazzController {
         }
 
         return DataResponse.fail();
+    }
+
+    @PostMapping("/api/class/getAll")
+    public DataResponse getAllClass() {
+        List<Clazz> clazzList = clazzService.selectAll();
+        ArrayList<ClassListDTO> classListDTOS = new ArrayList<>();
+        for(Clazz clazz:clazzList) {
+            ClassListDTO classListDTO = new ClassListDTO();
+            String ClassTitle = clazz.getMajor() + clazz.getClassName() + "(" + clazz.getGrade() +")";
+            classListDTO.setClassId(clazz.getClassId());
+            classListDTO.setClassTitle(ClassTitle);
+            classListDTOS.add(classListDTO);
+        }
+        return DataResponse.success().data(classListDTOS);
     }
 }
