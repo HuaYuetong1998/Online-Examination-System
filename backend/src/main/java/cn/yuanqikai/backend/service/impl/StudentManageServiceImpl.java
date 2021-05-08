@@ -1,6 +1,8 @@
 package cn.yuanqikai.backend.service.impl;
 
+import cn.yuanqikai.backend.controller.RegisterController;
 import cn.yuanqikai.backend.dto.StudentInfoIdsDTO;
+import cn.yuanqikai.backend.dto.StudentManageSearchDTO;
 import cn.yuanqikai.backend.entity.StudentClass;
 import cn.yuanqikai.backend.entity.StudentInfo;
 import cn.yuanqikai.backend.mapper.StudentClassMapper;
@@ -8,6 +10,8 @@ import cn.yuanqikai.backend.mapper.StudentInfoMapper;
 import cn.yuanqikai.backend.service.StudentManageService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +34,13 @@ public class StudentManageServiceImpl implements StudentManageService {
     public Page<StudentInfo> selectAllStudent(Integer currentPage, Integer pageSize) {
         PageHelper.startPage(currentPage,pageSize);
         return studentInfoMapper.selectAllStudent();
+    }
+
+
+    @Override
+    public Page<StudentInfo> selectStudentByMulti(StudentManageSearchDTO studentManageSearchDTO) {
+        PageHelper.startPage(studentManageSearchDTO.getCurrentPage(),studentManageSearchDTO.getPageSize());
+        return studentInfoMapper.selectByMulti(studentManageSearchDTO);
     }
 
     @Override

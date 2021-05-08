@@ -1,5 +1,6 @@
 package cn.yuanqikai.backend.mapper;
 
+import cn.yuanqikai.backend.dto.StudentManageSearchDTO;
 import cn.yuanqikai.backend.entity.StudentInfo;
 import com.github.pagehelper.Page;
 
@@ -21,6 +22,8 @@ public interface StudentInfoMapper {
     Page<StudentInfo> selectAllStudent();
 
     Page<StudentInfo> selectByStudentIds(List<Integer> list);
+
+    Page<StudentInfo> selectByMulti(StudentManageSearchDTO studentManageSearchDTO);
 
     StudentInfo selectByTel(String tel);
 }

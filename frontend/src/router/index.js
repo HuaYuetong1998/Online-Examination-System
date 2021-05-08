@@ -100,9 +100,9 @@ const routes = [
         }
       },
       {
-        path: 'studentInfo',
-        name: 'studentInfo',
-        component: () => import('../components/manage/StudentInfo.vue'),
+        path: 'studentSituation',
+        name: 'studentSituation',
+        component: () => import('../components/manage/StudentSituation.vue'),
         meta:{
           title:'软工综合测试系统',
           keepAlive: true

@@ -1,7 +1,7 @@
 <template>
-  <div class="student-info-wrapper">
-    <div class="info-container">
-      <el-form> 123 </el-form>
+  <div class="student-situation-wrapper">
+    <div class="situation-container">
+      <el-form>123</el-form>
     </div>
   </div>
 </template>

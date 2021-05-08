@@ -8,7 +8,7 @@ public interface AnswerSheetMapper {
 
     int insertSelective(AnswerSheet record);
 
-    int selectRepeat(@Param("examId") Integer examId,@Param("studentId") Integer studentId);
+    int selectRepeat(@Param("examId") Integer examId, @Param("studentId") Integer studentId);
 
     int updateAnswerSheet(AnswerSheet answerSheet);
 }

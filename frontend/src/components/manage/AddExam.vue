@@ -1,7 +1,7 @@
 <template>
   <div class="exam-wrapper">
-    <el-tabs type="border-card">
-      <el-tab-pane label="考试发布">
+    <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
+      <el-tab-pane label="考试发布" name="publish">
         <div class="exam-container">
           <el-form
             ref="examForm"
@@ -137,7 +137,92 @@
           </el-form>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="考试状态管理">考试状态</el-tab-pane>
+      <el-tab-pane label="考试状态管理" name="status">
+        <div class="status-container">
+          <el-form
+            ref="examStatusForm"
+            :model="examStatusForm"
+            class="examStatusForm"
+          >
+            <el-form-item label="考试ID：">
+              <el-input v-model="examStatusForm.examId"></el-input>
+            </el-form-item>
+            <el-form-item label="考试标题：">
+              <el-input v-model="examStatusForm.examTitle"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="searchExam">搜索</el-button>
+            </el-form-item>
+          </el-form>
+
+          <el-divider></el-divider>
+
+          <div class="result">
+            <el-table :data="resultData" border v-loading="loading">
+              <el-table-column
+                fixed
+                prop="examId"
+                label="考试ID"
+                width="100"
+              ></el-table-column>
+              <el-table-column
+                prop="examTitle"
+                label="考试标题"
+              ></el-table-column>
+              <el-table-column prop="timeLimit" label="时限"></el-table-column>
+              <el-table-column
+                prop="startTime"
+                label="开始时间"
+              ></el-table-column>
+              <el-table-column
+                prop="overTime"
+                label="结束时间"
+              ></el-table-column>
+              <el-table-column prop="status" label="状态" width="80">
+                <template slot-scope="scope">
+                  <el-tag v-if="scope.row.status == '0'">进行中</el-tag>
+                  <el-tag type="danger" v-if="scope.row.status == '1'"
+                    >已结束</el-tag
+                  >
+                </template>
+              </el-table-column>
+              <el-table-column fixed="right" label="操作" width="120">
+                <template slot-scope="scope">
+                  <el-button
+                    v-if="scope.row.status == '0'"
+                    icon="el-icon-error"
+                    type="danger"
+                    size="small"
+                    style="width: 95px"
+                    @click.native.prevent="endExam(scope.$index, resultData)"
+                    >提前结束</el-button
+                  >
+                  <el-button
+                    v-if="scope.row.status == '1'"
+                    icon="el-icon-remove-outline"
+                    type="info"
+                    size="small"
+                    style="width: 95px"
+                    >无操作</el-button
+                  >
+                </template>
+              </el-table-column>
+            </el-table>
+
+            <div class="pageination">
+              <el-pagination
+                background
+                @current-change="handleStatusCurrentChange"
+                :current-page="statusCurrentPage"
+                :page-size="statusPageSize"
+                layout="total, prev, pager, next, jumper"
+                :total="statusPageTotal"
+              >
+              </el-pagination>
+            </div>
+          </div>
+        </div>
+      </el-tab-pane>
     </el-tabs>
 
     <el-dialog
@@ -197,9 +282,12 @@ export default {
   created: function () {
     this.loadPaper();
     this.loadClass();
+    this.searchExam();
+    this.getLocalTab();
   },
   data() {
     return {
+      activeName: "publish",
       startDatePickerOptions: {
         disabledDate: (time) => {
           return time.getTime() < Date.now() - 24 * 60 * 60 * 1000;
@@ -251,6 +339,15 @@ export default {
           { required: true, message: "请输入考试标题", trigger: "blur" },
         ],
       },
+
+      examStatusForm: {
+        examId: "",
+        examTitle: "",
+      },
+      resultData: [],
+      statusCurrentPage: 1,
+      statusPageSize: 5,
+      statusPageTotal: null,
     };
   },
   methods: {
@@ -571,6 +668,87 @@ export default {
         }
       });
     },
+
+    handleStatusCurrentChange(val) {
+      this.statusCurrentPage = val;
+      this.searchExam();
+    },
+    searchExam() {
+      axios({
+        method: "post",
+        url: "/api/exam/search",
+        data: {
+          examId: this.examStatusForm.examId,
+          examTitle: this.examStatusForm.examTitle,
+          currentPage: this.statusCurrentPage,
+          pageSize: this.statusPageSize,
+        },
+      }).then((res) => {
+        this.resultData = [];
+        if (res.status === 200) {
+          this.loading = true;
+          let result = res.data.data;
+          let exams = result.exams;
+          let pageTotal = result.pageTotal;
+          this.statusPageTotal = pageTotal;
+          for (let i = 0; i < exams.length; i++) {
+            this.resultData.push({
+              examId: exams[i].examId,
+              examTitle: exams[i].examTitle,
+              timeLimit: exams[i].timeLimit,
+              startTime: exams[i].startTime,
+              overTime: exams[i].overTime,
+              status: exams[i].status,
+            });
+          }
+          this.loading = false;
+        }
+      });
+    },
+
+    endExam(index, rows) {
+      let examId = rows[index].examId;
+      this.$confirm("是否要提前终止考试？", "警告", {
+        confirmButtonText: "终止",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(() => {
+        axios({
+          method: "get",
+          url: "/api/examPage/examStatus",
+          params: {
+            examId: examId,
+          },
+        })
+          .then((res) => {
+            if (res.status === 200) {
+              this.$message({
+                showClose: true,
+                message: "已经终止考试",
+                type: "success",
+              });
+              this.reload();
+              this.activeName = "status";
+            }
+          })
+          .catch(() => {
+            this.$message({
+              showClose: true,
+              message: "取消操作",
+              type: "warning",
+            });
+          });
+      });
+    },
+
+    getLocalTab() {
+      if (localStorage.getItem("tabs") != null) {
+        this.activeName = localStorage.getItem("tabs");
+      }
+    },
+    handleClick(tab) {
+      localStorage.setItem("tabs", tab.name);
+    },
   },
 };
 </script>
@@ -590,5 +768,21 @@ export default {
   margin-top: 20px;
   display: flex;
   justify-content: center;
+}
+.status-container {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  height: 900px;
+  text-align: left;
+}
+.examStatusForm {
+  display: flex;
+  flex-direction: row;
+}
+.el-form-item {
+  display: flex;
+  flex-direction: row;
+  margin-right: 30px;
 }
 </style>

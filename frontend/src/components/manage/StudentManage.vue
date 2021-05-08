@@ -5,15 +5,11 @@
         <el-form-item label="学号：">
           <el-input v-model="studentForm.studentId"></el-input>
         </el-form-item>
-        <el-form-item label="学号：">
-          <el-input v-model="studentForm.studentId"></el-input>
-        </el-form-item>
-        <el-form-item label="学号：">
-          <el-input v-model="studentForm.studentId"></el-input>
+        <el-form-item label="姓名：">
+          <el-input v-model="studentForm.realName"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">查询</el-button>
-          <el-button type="success">添加</el-button>
+          <el-button type="primary" @click="searchStudent">查询</el-button>
         </el-form-item>
       </el-form>
 
@@ -34,31 +30,88 @@
           <el-table-column fixed="right" label="操作" width="280">
             <template>
               <el-button icon="el-icon-info" type="primary" size="small"
-                >详情</el-button
+                >查看成绩</el-button
               >
-              <el-button icon="el-icon-edit" type="success" size="small"
-                >修改</el-button
-              >
-
-              <el-button icon="el-icon-delete" type="danger" size="small"
-                >删除</el-button
+              <el-button icon="el-icon-view" type="success" size="small"
+                >查看考试情况</el-button
               >
             </template>
           </el-table-column>
         </el-table>
+
+        <div class="pageination">
+          <el-pagination
+            background
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            layout="total, prev, pager, next, jumper"
+            :total="pageTotal"
+          >
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
       studentForm: {
         studentId: "",
+        realName: "",
       },
+      currentPage: 1,
+      pageSize: 5,
+      pageTotal: null,
+      resultData: [],
+      loading: false,
     };
+  },
+  created: function () {
+    this.searchStudent();
+  },
+  methods: {
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.searchStudent();
+    },
+
+    searchStudent() {
+      axios({
+        method: "post",
+        url: "/api/studentManage/search",
+        data: {
+          studentId: this.studentForm.studentId,
+          realName: this.studentForm.realName,
+          currentPage: this.currentPage,
+          pageSize: this.pageSize,
+        },
+      }).then((res) => {
+        console.log(res);
+        this.resultData = [];
+        if (res.status === 200) {
+          this.loading = true;
+          let result = res.data.data;
+          let pageTotal = result.pageTotal;
+          let studentInfos = result.studentInfos;
+          this.pageTotal = pageTotal;
+          for (let i = 0; i < studentInfos.length; i++) {
+            this.resultData.push({
+              studentId: studentInfos[i].studentId,
+              realName: studentInfos[i].realName,
+              gender: studentInfos[i].gender,
+              tel: studentInfos[i].tel,
+              email: studentInfos[i].email,
+            });
+          }
+          this.loading = false;
+        }
+      });
+    },
   },
 };
 </script>
@@ -80,5 +133,8 @@ export default {
   display: flex;
   flex-direction: row;
   margin-right: 30px;
+}
+.pageination {
+  margin-top: 20px;
 }
 </style>

@@ -1,11 +1,13 @@
 package cn.yuanqikai.backend.controller;
 
 import cn.yuanqikai.backend.dto.ExamDTO;
+import cn.yuanqikai.backend.dto.ExamStatusDTO;
+import cn.yuanqikai.backend.entity.Exam;
 import cn.yuanqikai.backend.entity.ExamStudent;
-import cn.yuanqikai.backend.mapper.ExamMapper;
 import cn.yuanqikai.backend.mapper.StudentClassMapper;
 import cn.yuanqikai.backend.response.DataResponse;
 import cn.yuanqikai.backend.service.ExamManageService;
+import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -51,5 +54,15 @@ public class ExamManageController {
         }
         return DataResponse.fail();
 
+    }
+
+    @PostMapping("/api/exam/search")
+    public DataResponse searchExam(@RequestBody ExamStatusDTO examStatusDTO) {
+
+        Page<Exam> exams = examManageService.selectByMulti(examStatusDTO);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("exams",exams);
+        map.put("pageTotal",exams.getTotal());
+        return DataResponse.success().data(map);
     }
 }

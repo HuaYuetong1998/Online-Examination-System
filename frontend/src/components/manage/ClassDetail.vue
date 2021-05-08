@@ -21,8 +21,16 @@
             label="学号"
             width="100"
           ></el-table-column>
-          <el-table-column prop="realName" label="真实姓名"></el-table-column>
-          <el-table-column prop="gender" label="性别"></el-table-column>
+          <el-table-column
+            prop="realName"
+            label="真实姓名"
+            width="200"
+          ></el-table-column>
+          <el-table-column
+            prop="gender"
+            label="性别"
+            width="100"
+          ></el-table-column>
           <el-table-column prop="tel" label="电话"></el-table-column>
           <el-table-column prop="email" label="邮箱"></el-table-column>
           <el-table-column fixed="right" label="操作" width="100">

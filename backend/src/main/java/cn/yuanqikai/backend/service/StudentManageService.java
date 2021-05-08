@@ -1,6 +1,7 @@
 package cn.yuanqikai.backend.service;
 
 import cn.yuanqikai.backend.dto.StudentInfoIdsDTO;
+import cn.yuanqikai.backend.dto.StudentManageSearchDTO;
 import cn.yuanqikai.backend.entity.StudentClass;
 import cn.yuanqikai.backend.entity.StudentInfo;
 import cn.yuanqikai.backend.entity.User;
@@ -15,6 +16,8 @@ import java.util.List;
 public interface StudentManageService {
 
     Page<StudentInfo> selectAllStudent(Integer currentPage, Integer pageSize);
+
+    Page<StudentInfo> selectStudentByMulti(StudentManageSearchDTO studentManageSearchDTO);
 
     int addStudentToClass(StudentClass studentClass);
 

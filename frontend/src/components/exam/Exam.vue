@@ -45,7 +45,7 @@
             :key="item.examId"
           >
             <el-card class="box-card" shadow="hover">
-              <el-tag type="warning">未批改</el-tag>
+              <el-tag type="warning" class="exam-tag">未批改</el-tag>
               <ul>
                 <li>考试名称：{{ item.examTitle }}</li>
                 <li>题目数量：{{ item.questionsNum }}</li>
@@ -234,8 +234,8 @@ export default {
   width: 350px;
   margin-right: 25px;
   height: auto;
-  display: flex;
 }
+
 .box-card:nth-child(3n + 3) {
   margin-right: 0;
 }
@@ -267,5 +267,8 @@ export default {
 }
 .pageination {
   margin-top: 20px;
+}
+.exam-tag {
+  float: right;
 }
 </style>

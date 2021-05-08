@@ -1,11 +1,14 @@
 package cn.yuanqikai.backend.service.impl;
 
 import cn.yuanqikai.backend.dto.ExamDTO;
+import cn.yuanqikai.backend.dto.ExamStatusDTO;
 import cn.yuanqikai.backend.entity.Exam;
 import cn.yuanqikai.backend.entity.ExamStudent;
 import cn.yuanqikai.backend.mapper.ExamMapper;
 import cn.yuanqikai.backend.mapper.ExamStudentMapper;
 import cn.yuanqikai.backend.service.ExamManageService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +50,11 @@ public class ExamManageServiceImpl implements ExamManageService {
     @Override
     public int addExamStudent(ExamStudent examStudent) {
         return examStudentMapper.insertSelective(examStudent);
+    }
+
+    @Override
+    public Page<Exam> selectByMulti(ExamStatusDTO examStatusDTO) {
+        PageHelper.startPage(examStatusDTO.getCurrentPage(),examStatusDTO.getPageSize());
+        return examMapper.selectExamByMulti(examStatusDTO);
     }
 }

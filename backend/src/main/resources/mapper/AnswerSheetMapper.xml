@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="cn.yuanqikai.backend.entity.AnswerSheet">
     <result column="exam_id" jdbcType="INTEGER" property="examId" />
     <result column="student_id" jdbcType="INTEGER" property="studentId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.yuanqikai.backend.entity.AnswerSheet">
     <result column="answer_sheet" jdbcType="LONGVARCHAR" property="answerSheet" />
@@ -11,17 +12,11 @@
   <sql id="Blob_Column_List">
     answer_sheet
   </sql>
-  <select id="selectRepeat" resultType="java.lang.Integer">
-    select count(*)
-    from answer_sheet
-    where exam_id = #{examId}
-    and student_id = #{studentId}
-  </select>
   <insert id="insert" parameterType="cn.yuanqikai.backend.entity.AnswerSheet">
-    insert into answer_sheet (exam_id, student_id, answer_sheet
-      )
-    values (#{examId,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{answerSheet,jdbcType=LONGVARCHAR}
-      )
+    insert into answer_sheet (exam_id, student_id, status, 
+      answer_sheet)
+    values (#{examId,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{answerSheet,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.yuanqikai.backend.entity.AnswerSheet">
     insert into answer_sheet
@@ -31,6 +26,9 @@
       </if>
       <if test="studentId != null">
         student_id,
+      </if>
+      <if test="status != null">
+        status,
       </if>
       <if test="answerSheet != null">
         answer_sheet,
@@ -43,15 +41,24 @@
       <if test="studentId != null">
         #{studentId,jdbcType=INTEGER},
       </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
       <if test="answerSheet != null">
         #{answerSheet,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
+  <select id="selectRepeat" resultType="java.lang.Integer">
+    select count(*)
+    from answer_sheet
+    where exam_id = #{examId}
+      and student_id = #{studentId}
+  </select>
   <update id="updateAnswerSheet" parameterType="cn.yuanqikai.backend.entity.AnswerSheet">
     update answer_sheet
     set answer_sheet = #{answerSheet,jdbcType=LONGVARCHAR}
     where exam_id = #{examId,jdbcType=INTEGER}
-    and student_id = #{studentId,jdbcType=INTEGER}
+      and student_id = #{studentId,jdbcType=INTEGER}
   </update>
 </mapper>

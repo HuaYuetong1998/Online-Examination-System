@@ -2,6 +2,7 @@ package cn.yuanqikai.backend.mapper;
 
 import cn.yuanqikai.backend.dto.ExamDTO;
 import cn.yuanqikai.backend.dto.ExamDisplayDTO;
+import cn.yuanqikai.backend.dto.ExamStatusDTO;
 import cn.yuanqikai.backend.entity.Exam;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
@@ -26,4 +27,6 @@ public interface ExamMapper {
     List<Exam> selectOveredExam(List<Integer> list);
 
     int updateStatusById(Integer examId);
+
+    Page<Exam> selectExamByMulti(ExamStatusDTO examStatusDTO);
 }

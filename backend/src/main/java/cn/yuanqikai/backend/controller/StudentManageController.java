@@ -3,12 +3,15 @@ package cn.yuanqikai.backend.controller;
 import cn.yuanqikai.backend.dto.SearchStudentInfoDTO;
 import cn.yuanqikai.backend.dto.StudentClassDTO;
 import cn.yuanqikai.backend.dto.StudentInfoIdsDTO;
+import cn.yuanqikai.backend.dto.StudentManageSearchDTO;
 import cn.yuanqikai.backend.entity.StudentClass;
 import cn.yuanqikai.backend.entity.StudentInfo;
 import cn.yuanqikai.backend.response.DataResponse;
 import cn.yuanqikai.backend.service.StudentManageService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -91,4 +94,15 @@ public class StudentManageController {
         }
         return DataResponse.fail();
     }
+
+    @PostMapping("/api/studentManage/search")
+    public DataResponse searchStudentInfo(@RequestBody StudentManageSearchDTO studentManageSearchDTO){
+        Page<StudentInfo> studentInfos = studentManageService.selectStudentByMulti(studentManageSearchDTO);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("studentInfos",studentInfos);
+        map.put("pageTotal",studentInfos.getTotal());
+        return  DataResponse.success().data(map);
+    }
+
 }

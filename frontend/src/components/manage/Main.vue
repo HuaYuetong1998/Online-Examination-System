@@ -42,13 +42,13 @@
         </el-submenu>
         <el-submenu class="item" index="2">
           <template slot="title">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-s-order"></i>
             <span>试卷管理</span>
           </template>
           <el-menu-item-group>
             <el-menu-item index="/manage/addPaper">添加试卷</el-menu-item>
             <el-menu-item index="/manage/paperManage">查看试卷</el-menu-item>
-            <el-menu-item index="/manage/addExam">发布考试</el-menu-item>
+            <el-menu-item index="/manage/addExam">考试管理</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-submenu class="item" index="3">
@@ -57,27 +57,25 @@
             <span>学生管理</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="/manage/studentManage"
-              >查看学生信息</el-menu-item
-            >
-            <el-menu-item index="/manage/studentInfo"
-              >查看学生成绩</el-menu-item
+            <el-menu-item index="/manage/studentManage">学生信息</el-menu-item>
+            <el-menu-item index="/manage/studentSituation"
+              >学生考试情况</el-menu-item
             >
           </el-menu-item-group>
         </el-submenu>
         <el-submenu class="item" index="4">
           <template slot="title">
-            <i class="el-icon-data-line"></i>
+            <i class="el-icon-s-marketing"></i>
             <span>成绩查看</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="/manage/score">查看成绩</el-menu-item>
+            <el-menu-item index="/manage/score">查看学生成绩</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
 
         <el-submenu class="item" index="5">
           <template slot="title">
-            <i class="el-icon-data-line"></i>
+            <i class="el-icon-s-claim"></i>
             <span>班级管理</span>
           </template>
           <el-menu-item-group>

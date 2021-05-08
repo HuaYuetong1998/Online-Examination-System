@@ -1,7 +1,7 @@
 <template>
   <div class="add-paper-wrapper">
     <el-tabs type="border-card" v-model="activeName">
-      <el-tab-pane label="创建试卷" name="first">
+      <el-tab-pane label="创建试卷" name="create">
         <div class="paper-container">
           <el-form
             :model="paperForm"
@@ -159,91 +159,95 @@
             </el-form-item>
           </el-form>
         </div>
-      </el-tab-pane>
-    </el-tabs>
-
-    <!-- 试卷预览 -->
-    <el-button class="open" @click="switchPreview">打开试卷预览</el-button>
-    <transition name="el-zoom-in-top">
-      <el-card class="paper-preview" v-show="isPreview">
-        <div slot="header" class="clearfix">
-          <span>试卷预览</span>
-          <el-button
-            style="float: right; padding: 3px 0"
-            type="text"
-            @click="switchPreview"
-            >隐藏</el-button
-          >
-        </div>
-        <div class="paper-content">
-          <div
-            class="question-item"
-            v-for="(item, index) in paperQuestion"
-            :key="index"
-          >
-            <div class="question-title">
-              <span
-                >{{ index + 1 }}. {{ item.question }} ({{ item.score }}分)</span
+        <!-- 试卷预览 -->
+        <el-button class="open" @click="switchPreview">打开试卷预览</el-button>
+        <transition name="el-zoom-in-top">
+          <el-card class="paper-preview" v-show="isPreview">
+            <div slot="header" class="clearfix">
+              <span>试卷预览</span>
+              <el-button
+                style="float: right; padding: 3px 0"
+                type="text"
+                @click="switchPreview"
+                >隐藏</el-button
               >
             </div>
-            <div
-              class="choiceSelect"
-              v-if="item.questionId >= 100000 && item.questionId < 200000"
-            >
-              <div class="choiceItem">A. {{ item.answerA }}</div>
-              <div class="choiceItem">B. {{ item.answerB }}</div>
-              <div class="choiceItem">C. {{ item.answerC }}</div>
-              <div class="choiceItem">D. {{ item.answerD }}</div>
-            </div>
+            <div class="paper-content">
+              <div
+                class="question-item"
+                v-for="(item, index) in paperQuestion"
+                :key="index"
+              >
+                <div class="question-title">
+                  <span
+                    >{{ index + 1 }}. {{ item.question }} ({{
+                      item.score
+                    }}分)</span
+                  >
+                </div>
+                <div
+                  class="choiceSelect"
+                  v-if="item.questionId >= 100000 && item.questionId < 200000"
+                >
+                  <div class="choiceItem">A. {{ item.answerA }}</div>
+                  <div class="choiceItem">B. {{ item.answerB }}</div>
+                  <div class="choiceItem">C. {{ item.answerC }}</div>
+                  <div class="choiceItem">D. {{ item.answerD }}</div>
+                </div>
 
-            <div
-              class="fillSheet"
-              v-if="item.questionId >= 200000 && item.questionId < 300000"
-            >
-              <div><span>答题：</span>_____</div>
-            </div>
+                <div
+                  class="fillSheet"
+                  v-if="item.questionId >= 200000 && item.questionId < 300000"
+                >
+                  <div><span>答题：</span>_____</div>
+                </div>
 
-            <div
-              class="judgeSheet"
-              v-if="item.questionId >= 300000 && item.questionId < 400000"
-            >
-              <div>
-                <span>答题：( ) </span
-                ><i style="font-size: 14px; margin-left: 20px">(填写T或者F)</i>
+                <div
+                  class="judgeSheet"
+                  v-if="item.questionId >= 300000 && item.questionId < 400000"
+                >
+                  <div>
+                    <span>答题：( ) </span
+                    ><i style="font-size: 14px; margin-left: 20px"
+                      >(填写T或者F)</i
+                    >
+                  </div>
+                </div>
+
+                <div class="subjectiveSheet" v-if="item.questionId >= 400000">
+                  <span>答题：</span><span>_____________________________</span>
+                </div>
+
+                <div class="right-answer">
+                  <span>标准答案:</span
+                  ><span
+                    style="margin-left: 10px"
+                    v-if="item.questionId >= 100000 && item.questionId < 200000"
+                    >{{ item.rightAnswer }}</span
+                  >
+                  <span style="margin-left: 10px" v-else>
+                    {{ item.answer }}
+                  </span>
+                </div>
+                <div class="level" style="display: flex; flex-direction: row">
+                  <span>难度：</span>
+                  <span
+                    ><el-rate
+                      v-model="paperQuestion[index].level"
+                      disabled
+                      show-score
+                      text-color="#ff9900"
+                    >
+                    </el-rate
+                  ></span>
+                </div>
               </div>
             </div>
-
-            <div class="subjectiveSheet" v-if="item.questionId >= 400000">
-              <span>答题：</span><span>_____________________________</span>
-            </div>
-
-            <div class="right-answer">
-              <span>标准答案:</span
-              ><span
-                style="margin-left: 10px"
-                v-if="item.questionId >= 100000 && item.questionId < 200000"
-                >{{ item.rightAnswer }}</span
-              >
-              <span style="margin-left: 10px" v-else>
-                {{ item.answer }}
-              </span>
-            </div>
-            <div class="level" style="display: flex; flex-direction: row">
-              <span>难度：</span>
-              <span
-                ><el-rate
-                  v-model="paperQuestion[index].level"
-                  disabled
-                  show-score
-                  text-color="#ff9900"
-                >
-                </el-rate
-              ></span>
-            </div>
-          </div>
-        </div>
-      </el-card>
-    </transition>
+          </el-card>
+        </transition>
+      </el-tab-pane>
+      <el-tab-pane label="上传试卷" name="upload"></el-tab-pane>
+    </el-tabs>
 
     <!-- 手动添加题目 -->
     <el-dialog
@@ -405,7 +409,7 @@ export default {
       isAuto: false,
       isPreview: true,
       addQuestionVisible: false,
-      activeName: "first",
+      activeName: "create",
       searchClickCount: 0,
       subjects: [],
       subjectIds: [],
