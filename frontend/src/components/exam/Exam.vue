@@ -45,6 +45,7 @@
             :key="item.examId"
           >
             <el-card class="box-card" shadow="hover">
+              <el-tag type="warning">未批改</el-tag>
               <ul>
                 <li>考试名称：{{ item.examTitle }}</li>
                 <li>题目数量：{{ item.questionsNum }}</li>
@@ -75,6 +76,7 @@
 <script>
 import axios from "axios";
 export default {
+  inject: ["reload"],
   created: function () {
     this.initExamOnGoing();
     this.initExamOvered();

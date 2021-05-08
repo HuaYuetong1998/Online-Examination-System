@@ -1,9 +1,11 @@
 <template>
   <div>
     <headBar></headBar>
-    <practice></practice>
-    <footerBar></footerBar>
-    <backTop></backTop>
+    <div style="height: 650px; overflow: auto">
+      <practice></practice>
+      <footerBar></footerBar>
+      <backTop></backTop>
+    </div>
   </div>
 </template>
 

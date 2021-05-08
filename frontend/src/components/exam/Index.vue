@@ -10,17 +10,12 @@
                 与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。
               </div>
             </el-collapse-item>
-            <el-collapse-item title="考试条约" class="notice-title">
+            <el-collapse-item title="考生须知" class="notice-title">
               <div class="notice-container">
                 与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。
               </div>
             </el-collapse-item>
-            <el-collapse-item title="考试条约" class="notice-title">
-              <div class="notice-container">
-                与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。
-              </div>
-            </el-collapse-item>
-            <el-collapse-item title="考试条约" class="notice-title">
+            <el-collapse-item title="考试通知" class="notice-title">
               <div class="notice-container">
                 与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。
               </div>
@@ -106,6 +101,20 @@ export default {
     return {
       message: "hello",
     };
+  },
+  mounted: function () {
+    if (location.href.indexOf("") == -1) {
+      location.href = location.href + "";
+      location.reload();
+    }
+  },
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return {
+        selector: to.hash,
+        behavior: "smooth",
+      };
+    }
   },
 };
 </script>

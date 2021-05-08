@@ -1,8 +1,10 @@
 <template>
   <div>
     <headBar></headBar>
-    <index></index>
-    <footerBar></footerBar>
+    <div style="height: 650px; overflow: auto">
+      <index></index>
+      <footerBar></footerBar>
+    </div>
     <backTop></backTop>
   </div>
 </template>

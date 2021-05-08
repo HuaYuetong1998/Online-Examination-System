@@ -159,4 +159,9 @@
       is_snap = #{isSnap,jdbcType=INTEGER}
     where exam_id = #{examId,jdbcType=INTEGER}
   </update>
+  <update id="updateStatusById" parameterType="java.lang.Integer">
+    update exam_manage
+    set status = 1
+    where exam_id = #{examId,jdbcType=INTEGER}
+  </update>
 </mapper>

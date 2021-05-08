@@ -23,7 +23,7 @@
             <a href="javascript:;">忘记密码？</a>
           </div>
           <el-row class="login-button">
-            <el-button type="primary" size="medium" @click="login"
+            <el-button type="primary" size="medium" @click="login" ref="login"
               >登录</el-button
             >
           </el-row>
@@ -56,7 +56,6 @@ export default {
     login() {
       let username = this.form.username;
       let password = this.form.password;
-
       axios({
         method: "post",
         url: "/api/login",
@@ -100,6 +99,7 @@ export default {
                   this.$cookies.set("token", resData.token, expireTimes, "/");
                   sessionStorage.setItem("token", resData.token);
                   this.$router.push({ path: "/manage/index" });
+
                   break;
                 case 1:
                   this.$cookies.set(
@@ -148,6 +148,7 @@ export default {
                   this.$cookies.set("token", resData.token, expireTimes, "/");
                   sessionStorage.setItem("token", resData.token);
                   this.$router.push({ path: "/student/index" });
+                  
                   break;
                 default:
                   console.log("role的数值出错了");
@@ -209,8 +210,18 @@ export default {
           }
         });
     },
+    enterLogin(e) {
+      if (e.keyCode === 13) {
+        this.login();
+      }
+    },
   },
-  mutations: {},
+  mounted() {
+    window.addEventListener("keyup", this.enterLogin);
+  },
+  destroyed() {
+    window.removeEventListener("keyup", this.enterLogin, false);
+  },
 };
 </script>
 

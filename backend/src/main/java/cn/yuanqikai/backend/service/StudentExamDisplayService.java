@@ -2,6 +2,7 @@ package cn.yuanqikai.backend.service;
 
 import cn.yuanqikai.backend.dto.ExamDisplayDTO;
 import cn.yuanqikai.backend.dto.QuestionDTO;
+import cn.yuanqikai.backend.entity.AnswerSheet;
 import cn.yuanqikai.backend.entity.Exam;
 import cn.yuanqikai.backend.vo.ExamDisplayVO;
 import com.github.pagehelper.Page;
@@ -25,4 +26,6 @@ public interface StudentExamDisplayService {
     Exam selectExamById(Integer examId);
 
     Map<String,Object> getQuestionList(Integer paperId);
+
+    int saveAnswerSheet(AnswerSheet answerSheet);
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <paperPage></paperPage>
+    <paperPage ref="paperPage"></paperPage>
     <backTop></backTop>
   </div>
 </template>
@@ -8,25 +8,45 @@
 <script>
 import paperPage from "../components/exam/PaperPage";
 import backTop from "../components/exam/BackTop";
+
 export default {
   components: {
     paperPage,
     backTop,
   },
+  created() {},
+  methods: {
+    clear() {
+      let child = this.$refs.paperPage;
+      console.log(child.timeCountDown.promiseTimer);
+      clearInterval(child.timeCountDown.promiseTimer);
+      localStorage.removeItem("remainSecond");
+    },
+  },
   beforeRouteLeave(to, from, next) {
-    this.$confirm("正在考试当中，离开将提前交卷，你确定要离开吗？", "警告", {
-      confirmButtonText: "离开",
-      cancelButtonText: "留下",
-      type: "warning",
-    })
-      .then(() => {
-        // TODO 交卷功能
-
-        next();
+    if (localStorage.getItem("remainSecond")) {
+      this.$confirm("正在考试当中，你确定要提前交卷吗？", "警告", {
+        confirmButtonText: "交卷",
+        cancelButtonText: "留下",
+        type: "warning",
       })
-      .catch(() => {
-        next(false);
-      });
+        .then(() => {
+          this.$refs.paperPage.submit();
+          localStorage.removeItem("remainSecond");
+          localStorage.removeItem("answerSheet");
+          localStorage.removeItem("hasWriten");
+          this.clear();
+          this.$message({
+            showClose: true,
+            message: "成功交卷",
+            type: "success",
+          });
+          next();
+        })
+        .catch(() => {
+          next(false);
+        });
+    }
   },
 };
 </script>

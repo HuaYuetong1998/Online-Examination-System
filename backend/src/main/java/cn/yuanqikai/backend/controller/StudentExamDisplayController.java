@@ -1,6 +1,7 @@
 package cn.yuanqikai.backend.controller;
 
 import cn.yuanqikai.backend.dto.ExamDisplayDTO;
+import cn.yuanqikai.backend.entity.AnswerSheet;
 import cn.yuanqikai.backend.entity.Exam;
 import cn.yuanqikai.backend.entity.Paper;
 import cn.yuanqikai.backend.mapper.ExamMapper;
@@ -40,7 +41,6 @@ public class StudentExamDisplayController {
     public DataResponse getExamOnGoing(@RequestBody ExamDisplayVO examDisplayVO) {
         List<Integer> examIds = studentExamDisplayService.selectExamByStudentId(examDisplayVO.getStudentId());
         examDisplayVO.setExamIds(examIds);
-
 
         PageInfo<ExamDisplayDTO> examOnGoingPageInfo = studentExamDisplayService.selectExamOnGoing(examDisplayVO);
 
@@ -87,5 +87,25 @@ public class StudentExamDisplayController {
     public DataResponse getQuestions(@RequestParam Integer paperId) {
         Map<String, Object> questionList = studentExamDisplayService.getQuestionList(paperId);
         return DataResponse.success().data(questionList);
+    }
+
+    @PostMapping("/api/examPage/answerSheet")
+    public DataResponse saveAnswerSheet(@RequestBody AnswerSheet answerSheet) {
+
+        logger.error(answerSheet.getAnswerSheet());
+        int res = studentExamDisplayService.saveAnswerSheet(answerSheet);
+        if (res > 0) {
+            return DataResponse.success();
+        }
+        return DataResponse.fail();
+    }
+
+    @GetMapping("/api/examPage/examStatus")
+    public DataResponse switchExamStatus(@RequestParam Integer examId) {
+        int res = examMapper.updateStatusById(examId);
+        if(res > 0) {
+            return DataResponse.success();
+        }
+        return DataResponse.fail();
     }
 }

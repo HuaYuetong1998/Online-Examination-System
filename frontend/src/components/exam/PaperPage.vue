@@ -1,5 +1,10 @@
 <template>
-  <div class="examPage-wrapper">
+  <div
+    class="examPage-wrapper"
+    oncopy="return false"
+    onpaste="return false"
+    oncut="return false"
+  >
     <div class="exam-page">
       <el-card class="left-menu">
         <div class="title">考试卡</div>
@@ -25,15 +30,15 @@
                 <div class="list-title">选择题</div>
                 <div class="block-list">
                   <a
-                    :href="'#choiceQuestion' + index"
-                    :id="'choiceBlock' + index"
-                    class="answerBlock"
-                    v-bind:class="{
-                      answerBlockActive: answerListener.choiceListen[index - 1],
-                    }"
+                    v-bind:class="[
+                      answerListener.choiceListen[index - 1]
+                        ? 'answerBlockActive'
+                        : 'answerBlock',
+                    ]"
                     v-for="index of paperInfo.choiceNum"
                     :key="index"
-                    >{{ index }} {{ answerListener.choiceListen[index - 1] }}</a
+                    @click="anchor('choiceQuestion', index)"
+                    >{{ index }}</a
                   >
                 </div>
               </div>
@@ -42,10 +47,14 @@
                 <div class="list-title">填空题</div>
                 <div class="block-list">
                   <a
-                    href="#"
-                    class="answerBlock"
+                    v-bind:class="[
+                      answerListener.fillListen[index - 1]
+                        ? 'answerBlockActive'
+                        : 'answerBlock',
+                    ]"
                     v-for="index of paperInfo.fillNum"
                     :key="index"
+                    @click="anchor('fillQuestion', index)"
                     >{{ index }}</a
                   >
                 </div>
@@ -55,10 +64,14 @@
                 <div class="list-title">判断题</div>
                 <div class="block-list">
                   <a
-                    href="#"
-                    class="answerBlock"
+                    v-bind:class="[
+                      answerListener.judgeListen[index - 1]
+                        ? 'answerBlockActive'
+                        : 'answerBlock',
+                    ]"
                     v-for="index of paperInfo.judgeNum"
                     :key="index"
+                    @click="anchor('judgeQuestion', index)"
                     >{{ index }}</a
                   >
                 </div>
@@ -68,10 +81,14 @@
                 <div class="list-title">主观题</div>
                 <div class="block-list">
                   <a
-                    href="#"
-                    class="answerBlock"
+                    v-bind:class="[
+                      answerListener.subjectiveListen[index - 1]
+                        ? 'answerBlockActive'
+                        : 'answerBlock',
+                    ]"
                     v-for="index of paperInfo.subjectiveNum"
                     :key="index"
+                    @click="anchor('subjectiveQuestion', index)"
                     >{{ index }}</a
                   >
                 </div>
@@ -80,119 +97,146 @@
           </el-scrollbar>
         </div>
 
-        <el-button class="submit" type="primary">交卷</el-button>
+        <el-button class="submit" type="primary" @click="submitPaper"
+          >交卷</el-button
+        >
       </el-card>
       <el-card class="paper-container">
         <div class="exam-title">{{ examInfo.examTitle }}</div>
         <el-divider></el-divider>
-        <div class="question-title" v-if="paperInfo.choiceQuestion.length > 0">
-          <span style="margin-right: 10px; margin-left: 10px">一.</span
-          >选择题（共{{ paperInfo.choiceNum }}题，30分）
-        </div>
-        <div class="questions" v-if="paperInfo.choiceQuestion.length > 0">
-          <div
-            class="question-Item"
-            :id="'choiceQuestion' + (index + 1)"
-            v-for="(item, index) in paperInfo.choiceQuestion"
-            :key="index"
-          >
-            <div class="stem">
-              <span style="margin-right: 10px">{{ index + 1 }}.</span
-              ><span style="margin-right: 10px"
-                >{{ item.question }} <b>（{{ item.score }}分）</b></span
-              >
-            </div>
-            <el-radio-group
-              v-model="answerSheet.select[index]"
-              class="selectItem"
-              @change="selectListener(index)"
+        <el-scrollbar>
+          <div class="exam-question-container">
+            <div
+              class="question-title"
+              v-if="paperInfo.choiceQuestion.length > 0"
             >
-              <el-radio :label="1">A.{{ item.answerA }}</el-radio>
-              <el-radio :label="2">B.{{ item.answerB }}</el-radio>
-              <el-radio :label="3">C.{{ item.answerC }}</el-radio>
-              <el-radio :label="4">D.{{ item.answerD }}</el-radio>
-            </el-radio-group>
-          </div>
-        </div>
-
-        <div class="question-title">
-          <span style="margin-right: 10px; margin-left: 10px">二.</span
-          >填空题（共{{ paperInfo.fillNum }}题，30分）
-        </div>
-        <div class="questions">
-          <div
-            class="question-Item"
-            v-for="(item, index) in paperInfo.fillQuestion"
-            :key="index"
-          >
-            <div class="stem">
-              <span style="margin-right: 10px">{{ index + 1 }}.</span
-              ><span style="margin-right: 10px"
-                >{{ item.question }} <b>（{{ item.score }}分）</b></span
-              >
+              <span style="margin-right: 10px; margin-left: 10px"
+                ><i class="el-icon-star-on"></i></span
+              >选择题（共{{ paperInfo.choiceNum }}题，{{
+                paperInfo.choiceTotalScore
+              }}分）
             </div>
-            <el-input
-              placeholder="请输入答案"
-              v-model="answerSheet.fill[index]"
-              clearable
-              class="fillBlank"
-            ></el-input>
-          </div>
-        </div>
-
-        <div class="question-title">
-          <span style="margin-right: 10px; margin-left: 10px">三.</span
-          >判断题（共{{ paperInfo.judgeNum }}题，30分）
-        </div>
-        <div class="questions">
-          <div
-            class="question-Item"
-            v-for="(item, index) in paperInfo.judgeQuestion"
-            :key="index"
-          >
-            <div class="stem">
-              <span style="margin-right: 10px">{{ index + 1 }}.</span
-              ><span style="margin-right: 10px"
-                >{{ item.question }}<b>（{{ item.score }}分）</b></span
+            <div class="questions" v-if="paperInfo.choiceNum > 0">
+              <div
+                class="question-Item"
+                :id="'choiceQuestion' + (index + 1)"
+                v-for="(item, index) in paperInfo.choiceQuestion"
+                :key="index"
               >
+                <div class="stem">
+                  <span style="margin-right: 10px">{{ index + 1 }}.</span
+                  ><span style="margin-right: 10px"
+                    >{{ item.question }} <b>（{{ item.score }}分）</b></span
+                  >
+                </div>
+                <el-radio-group
+                  v-model="answerSheet.select[index].selected"
+                  class="selectItem"
+                  @change="selectListener('choiceListen', index)"
+                >
+                  <el-radio label="a">A.{{ item.answerA }}</el-radio>
+                  <el-radio label="b">B.{{ item.answerB }}</el-radio>
+                  <el-radio label="c">C.{{ item.answerC }}</el-radio>
+                  <el-radio label="d">D.{{ item.answerD }}</el-radio>
+                </el-radio-group>
+              </div>
             </div>
-            <el-radio-group
-              v-model="answerSheet.judge[index]"
-              class="selectItem"
-            >
-              <el-radio :label="1">正确</el-radio>
-              <el-radio :label="2">错误</el-radio>
-            </el-radio-group>
-          </div>
-        </div>
 
-        <div class="question-title">
-          <span style="margin-right: 10px; margin-left: 10px">四.</span
-          >主观题（共{{ paperInfo.subjectiveNum }}题，30分）
-        </div>
-        <div class="questions">
-          <div
-            class="question-Item"
-            v-for="(item, index) in paperInfo.subjectiveQuestion"
-            :key="index"
-          >
-            <div class="stem">
-              <span style="margin-right: 10px">{{ index + 1 }}.</span
-              ><span style="margin-right: 10px"
-                >{{ item.question }} <b>（{{ item.score }}分）</b></span
-              >
+            <div class="question-title" v-if="paperInfo.fillNum > 0">
+              <span style="margin-right: 10px; margin-left: 10px"
+                ><i class="el-icon-star-on"></i></span
+              >填空题（共{{ paperInfo.fillNum }}题，{{
+                paperInfo.fillTotalScore
+              }}分）
             </div>
-            <el-input
-              class="subjectiveBlank"
-              type="textarea"
-              placeholder="在此填写答案"
-              v-model="answerSheet.subjective[index]"
-              resize="none"
-              :autosize="{ minRows: 3, maxRows: 5 }"
-            >
-            </el-input>
+            <div class="questions">
+              <div
+                :id="'fillQuestion' + (index + 1)"
+                class="question-Item"
+                v-for="(item, index) in paperInfo.fillQuestion"
+                :key="index"
+              >
+                <div class="stem">
+                  <span style="margin-right: 10px">{{ index + 1 }}.</span
+                  ><span style="margin-right: 10px"
+                    >{{ item.question }} <b>（{{ item.score }}分）</b></span
+                  >
+                </div>
+                <el-input
+                  placeholder="请输入答案"
+                  v-model="answerSheet.fill[index].filled"
+                  clearable
+                  class="fillBlank"
+                  @change="selectListener('fillListen', index)"
+                ></el-input>
+              </div>
+            </div>
+
+            <div class="question-title" v-if="paperInfo.judgeNum > 0">
+              <span style="margin-right: 10px; margin-left: 10px"
+                ><i class="el-icon-star-on"></i></span
+              >判断题（共{{ paperInfo.judgeNum }}题，{{
+                paperInfo.judgeTotalScore
+              }}分）
+            </div>
+            <div class="questions">
+              <div
+                :id="'judgeQuestion' + (index + 1)"
+                class="question-Item"
+                v-for="(item, index) in paperInfo.judgeQuestion"
+                :key="index"
+              >
+                <div class="stem">
+                  <span style="margin-right: 10px">{{ index + 1 }}.</span
+                  ><span style="margin-right: 10px"
+                    >{{ item.question }}<b>（{{ item.score }}分）</b></span
+                  >
+                </div>
+                <el-radio-group
+                  v-model="answerSheet.judge[index].judged"
+                  class="selectItem"
+                  @change="selectListener('judgeListen', index)"
+                >
+                  <el-radio label="T">正确</el-radio>
+                  <el-radio label="F">错误</el-radio>
+                </el-radio-group>
+              </div>
+            </div>
+
+            <div class="question-title" v-if="paperInfo.subjectiveNum > 0">
+              <span style="margin-right: 10px; margin-left: 10px"
+                ><i class="el-icon-star-on"></i></span
+              >主观题（共{{ paperInfo.subjectiveNum }}题，{{
+                paperInfo.subjectiveTotalScore
+              }}分）
+            </div>
+            <div class="questions">
+              <div
+                :id="'subjectiveQuestion' + (index + 1)"
+                class="question-Item"
+                v-for="(item, index) in paperInfo.subjectiveQuestion"
+                :key="index"
+              >
+                <div class="stem">
+                  <span style="margin-right: 10px">{{ index + 1 }}.</span
+                  ><span style="margin-right: 10px"
+                    >{{ item.question }} <b>（{{ item.score }}分）</b></span
+                  >
+                </div>
+                <el-input
+                  class="subjectiveBlank"
+                  type="textarea"
+                  placeholder="在此填写答案"
+                  v-model="answerSheet.subjective[index].subjectived"
+                  resize="none"
+                  :autosize="{ minRows: 3, maxRows: 5 }"
+                  @change="selectListener('subjectiveListen', index)"
+                >
+                </el-input>
+              </div>
+            </div>
           </div>
-        </div>
+        </el-scrollbar>
       </el-card>
     </div>
   </div>
@@ -204,7 +248,6 @@ export default {
   name: "paperPage",
   data() {
     return {
-      isActive: true,
       examId: "",
       examInfo: {
         totalScore: "",
@@ -221,7 +264,7 @@ export default {
         promiseTimer: "",
       },
       answerListener: {
-        choiceListen: [false],
+        choiceListen: [],
         fillListen: [],
         judgeListen: [],
         subjectiveListen: [],
@@ -231,6 +274,10 @@ export default {
         fillNum: "",
         judgeNum: "",
         subjectiveNum: "",
+        choiceTotalScore: "",
+        fillTotalScore: "",
+        judgeTotalScore: "",
+        subjectiveTotalScore: "",
         choiceQuestion: [],
         fillQuestion: [],
         judgeQuestion: [],
@@ -248,16 +295,11 @@ export default {
     this.examId = this.$route.query.examId;
 
     this.getPaper();
-
-    let remainSecond = localStorage.getItem("remainSecond");
-    if (remainSecond != null) {
-      this.examInfo.remainSecond = remainSecond;
-    }
-    console.log(this.examInfo.remainSecond);
-    this.countDown(this.examInfo.remainSecond);
+    this.snap();
   },
 
   methods: {
+    //获取试卷
     getPaper() {
       axios({
         method: "get",
@@ -282,6 +324,7 @@ export default {
           this.paperInfo.judgeNum = paperData.judgeNum;
           this.paperInfo.subjectiveNum = paperData.subjectiveNum;
 
+          this.initTime();
           if (paperData.paperId != null) {
             axios({
               method: "get",
@@ -296,6 +339,10 @@ export default {
                 let fillQuestions = questionRes.fillQuestions;
                 let judgeQuestions = questionRes.judgeQuestions;
                 let subjectiveQuestions = questionRes.subjectiveQuestions;
+                let choiceTotalScore = 0;
+                let fillTotalScore = 0;
+                let judgeTotalScore = 0;
+                let subjectiveTotalScore = 0;
 
                 if (choiceQuestions != null) {
                   for (let i = 0; i < choiceQuestions.length; i++) {
@@ -306,9 +353,17 @@ export default {
                       answerC: choiceQuestions[i].answerC,
                       answerD: choiceQuestions[i].answerD,
                       score: choiceQuestions[i].score,
+                      questionId: choiceQuestions[i].questionId,
                     });
-                    //this.answerListener.choiceListen[i] = true;
+                    choiceTotalScore += choiceQuestions[i].score;
+                    this.answerListener.choiceListen[i] = false;
                   }
+                  /* if (examData.isRandom === 1) {
+                    this.paperInfo.choiceQuestion = this.shuffle(
+                      this.paperInfo.choiceQuestion
+                    );
+                  } */
+                  this.paperInfo.choiceTotalScore = choiceTotalScore;
                 }
 
                 if (fillQuestions != null) {
@@ -316,9 +371,12 @@ export default {
                     this.paperInfo.fillQuestion.push({
                       question: fillQuestions[i].question,
                       score: fillQuestions[i].score,
+                      questionId: fillQuestions[i].questionId,
                     });
+                    fillTotalScore += fillQuestions[i].score;
                     this.answerListener.fillListen[i] = false;
                   }
+                  this.paperInfo.fillTotalScore = fillTotalScore;
                 }
 
                 if (judgeQuestions != null) {
@@ -326,9 +384,12 @@ export default {
                     this.paperInfo.judgeQuestion.push({
                       question: judgeQuestions[i].question,
                       score: judgeQuestions[i].score,
+                      questionId: judgeQuestions[i].questionId,
                     });
+                    judgeTotalScore += judgeQuestions[i].score;
                     this.answerListener.judgeListen[i] = false;
                   }
+                  this.paperInfo.judgeTotalScore = judgeTotalScore;
                 }
 
                 if (subjectiveQuestions != null) {
@@ -336,31 +397,168 @@ export default {
                     this.paperInfo.subjectiveQuestion.push({
                       question: subjectiveQuestions[i].question,
                       score: subjectiveQuestions[i].score,
+                      questionId: subjectiveQuestions[i].questionId,
                     });
-
+                    subjectiveTotalScore += subjectiveQuestions[i].score;
                     this.answerListener.subjectiveListen[i] = false;
                   }
+                  this.paperInfo.subjectiveTotalScore = subjectiveTotalScore;
                 }
 
-                console.log(questionRes);
+                // console.log(questionRes);
+
+                this.initAnswerSheet();
               }
             });
           }
-
-          console.log(result);
+          if (this.examInfo.isSnap === 1) {
+            this.snap();
+          } else {
+            console.log("isSnapTrue");
+          }
         }
       });
     },
-    selectListener(index) {
-      console.log(index);
-      this.answerListener.choiceListen[index] = true;
-      this.isActive = false;
-      console.log(this.answerListener.choiceListen[index]);
-      console.log(this.answerListener.choiceListen);
+
+    //数组随机洗牌
+    shuffle(array) {
+      let len = array.length,
+        temp,
+        index;
+      while (len) {
+        index = Math.floor(Math.random() * len--);
+        temp = array[len];
+        array[len] = array[index];
+        array[index] = temp;
+      }
+      return array;
     },
+    // 切屏提示
+    snap() {
+      let count = 0;
+      window.onblur = function () {
+        document.title = "请你不要作弊";
+        count += 1;
+        /* if (count > 3) {
+          console.log("自动交卷！");
+        } else {
+          console.log(count);
+          alert(
+            "请勿离开考试界面，离开三次以上将会自动交卷!你已经离开了" +
+              count +
+              "次"
+          );
+        } */
+      };
+    },
+
+    // 初始化答题数据
+    initAnswerSheet() {
+      let choiceLen = this.paperInfo.choiceQuestion.length;
+      let fillLen = this.paperInfo.fillQuestion.length;
+      let judgeLen = this.paperInfo.judgeQuestion.length;
+      let subjectiveLen = this.paperInfo.subjectiveQuestion.length;
+      if (choiceLen > 0) {
+        for (let i = 0; i < choiceLen; i++) {
+          this.answerSheet.select.push({
+            questionId: "",
+            selected: "",
+          });
+        }
+      }
+      if (fillLen > 0) {
+        for (let i = 0; i < fillLen; i++) {
+          this.answerSheet.fill.push({
+            questionId: "",
+            filled: "",
+          });
+        }
+      }
+      if (judgeLen > 0) {
+        for (let i = 0; i < judgeLen; i++) {
+          this.answerSheet.judge.push({
+            questionId: "",
+            judged: "",
+          });
+        }
+      }
+      if (subjectiveLen > 0) {
+        for (let i = 0; i < subjectiveLen; i++) {
+          this.answerSheet.subjective.push({
+            questionId: "",
+            subjectived: "",
+          });
+        }
+      }
+      let answerSheet = localStorage.getItem("answerSheet");
+      let hasWriten = localStorage.getItem("hasWriten");
+      if (answerSheet != null) {
+        this.answerSheet = JSON.parse(answerSheet);
+      }
+      if (hasWriten != null) {
+        this.answerListener = JSON.parse(hasWriten);
+      }
+    },
+    // 初始化计时器
+    initTime() {
+      let remainSecond = localStorage.getItem("remainSecond");
+      if (remainSecond != null) {
+        this.examInfo.remainSecond = remainSecond;
+      } else {
+        this.examInfo.remainSecond = this.examInfo.timeLimit * 60;
+        localStorage.setItem("remainSecond", this.examInfo.remainSecond);
+      }
+      this.countDown(this.examInfo.remainSecond);
+    },
+    // 题目锚点
+    anchor(questionType, index) {
+      document.querySelector(`#${questionType}${index}`).scrollIntoView({
+        behavior: "smooth",
+      });
+    },
+
+    //监听题目改变状态
+    selectListener(questionType, index) {
+      let answerStr = JSON.stringify(this.answerSheet);
+      let hasWritenStr = JSON.stringify(this.answerListener);
+      this.answerListener[questionType][index] = true;
+
+      hasWritenStr = JSON.stringify(this.answerListener);
+      if (questionType === "choiceListen") {
+        this.answerSheet.select[
+          index
+        ].questionId = this.paperInfo.choiceQuestion[index].questionId;
+      }
+      if (questionType === "judgeListen") {
+        this.answerSheet.judge[index].questionId = this.paperInfo.judgeQuestion[
+          index
+        ].questionId;
+      }
+      if (questionType === "fillListen") {
+        if (this.answerSheet.fill[index] === "") {
+          this.answerListener[questionType][index] = false;
+          hasWritenStr = JSON.stringify(this.answerListener);
+        }
+        this.answerSheet.fill[index].questionId = this.paperInfo.fillQuestion[
+          index
+        ].questionId;
+      }
+      if (questionType === "subjectiveListen") {
+        if (this.answerSheet.subjective[index] === "") {
+          this.answerListener[questionType][index] = false;
+          hasWritenStr = JSON.stringify(this.answerListener);
+        }
+        this.answerSheet.subjective[
+          index
+        ].questionId = this.paperInfo.subjectiveQuestion[index].questionId;
+      }
+      localStorage.setItem("answerSheet", answerStr);
+      localStorage.setItem("hasWriten", hasWritenStr);
+    },
+
+    // 考试计时器
     countDown(remainSecond) {
       let that = this;
-
       this.timeCountDown.promiseTimer = setInterval(() => {
         if (remainSecond >= 0) {
           this.timeCountDown.hour = Math.floor((remainSecond / 3600) % 24);
@@ -391,8 +589,13 @@ export default {
           localStorage.setItem("remainSecond", remainSecond);
         } else {
           clearInterval(this.timeCountDown.promiseTimer);
+          this.$message({
+            showClose: true,
+            message: "自动交卷！",
+            type: "success",
+          });
           localStorage.removeItem("remainSecond");
-
+          this.$router.push({ path: "/student/exam" });
           // TODO 交卷功能
         }
       }, 1000);
@@ -400,6 +603,44 @@ export default {
 
     formatNum(num) {
       return num < 10 ? "0" + num : "" + num;
+    },
+
+    submitPaper() {
+      this.$router.push({ path: "/student/exam" });
+    },
+
+    submit() {
+      let answerStr = JSON.stringify(this.answerSheet);
+      localStorage.setItem("answerSheet", answerStr);
+      let answerSheet = localStorage.getItem("answerSheet");
+      let examId = this.examId;
+      let studentId = this.$cookies.get("studentId");
+
+      axios({
+        method: "post",
+        url: "/api/examPage/answerSheet",
+        data: {
+          answerSheet: answerSheet,
+          examId: examId,
+          studentId: studentId,
+        },
+      }).then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          axios({
+            method: "get",
+            url: "/api/examPage/examStatus",
+            params: {
+              examId: examId,
+            },
+          }).then(() => {
+            console.log(res);
+            if (res.status === 200) {
+              console.log("修改成功");
+            }
+          });
+        }
+      });
     },
   },
   computed: {
@@ -435,7 +676,7 @@ export default {
 }
 .paper-container {
   width: 70%;
-  min-height: 700px;
+  height: 670px;
   position: relative;
   left: 30%;
 }
@@ -491,14 +732,28 @@ export default {
   margin-bottom: 10px;
   transition: 0.1s;
   font-weight: 500;
+  cursor: pointer;
 }
 .answerBlockActive {
-  background: skyblue;
-  border: 1px solid #658be6;
+  display: block;
+  width: 49px;
+  height: 30px;
+  border: 1px solid #79bbff;
+  background: #409eff;
   text-decoration: none;
-  color: #474747;
+  color: #ffffff;
+  line-height: 30px;
+  font-size: 14px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  transition: 0.1s;
+  font-weight: 500;
+  cursor: pointer;
 }
 .answerBlock:nth-child(5n + 5) {
+  margin-right: 0;
+}
+.answerBlockActive:nth-child(5n + 5) {
   margin-right: 0;
 }
 .answerBlock:hover {
@@ -583,5 +838,9 @@ export default {
   margin-bottom: 10px;
   margin-left: 20px;
   width: 60%;
+}
+.exam-question-container {
+  padding: 0 10px 10px 0;
+  height: 450px;
 }
 </style>

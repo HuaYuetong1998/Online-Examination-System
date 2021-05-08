@@ -44,6 +44,9 @@ public class StudentExamDisplayServiceImpl implements StudentExamDisplayService 
     private PaperQuestionPoolMapper paperQuestionPoolMapper;
 
     @Autowired
+    private AnswerSheetMapper answerSheetMapper;
+
+    @Autowired
     private ChoiceQuestionMapper choiceQuestionMapper;
 
     @Autowired
@@ -188,5 +191,16 @@ public class StudentExamDisplayServiceImpl implements StudentExamDisplayService 
             map.put("subjectiveQuestions",subjectiveQuestions);
         }
         return map;
+    }
+
+    @Override
+    public int saveAnswerSheet(AnswerSheet answerSheet) {
+        int count = answerSheetMapper.selectRepeat(answerSheet.getExamId(), answerSheet.getStudentId());
+        if (count > 0) {
+            return answerSheetMapper.updateAnswerSheet(answerSheet);
+        }else {
+            return answerSheetMapper.insert(answerSheet);
+        }
+
     }
 }

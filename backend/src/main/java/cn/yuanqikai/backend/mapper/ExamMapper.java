@@ -25,4 +25,5 @@ public interface ExamMapper {
 
     List<Exam> selectOveredExam(List<Integer> list);
 
+    int updateStatusById(Integer examId);
 }

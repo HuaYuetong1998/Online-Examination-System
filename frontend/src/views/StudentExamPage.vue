@@ -1,8 +1,10 @@
 <template>
   <div>
     <headBar></headBar>
-    <exam></exam>
-    <footerBar></footerBar>
+    <div style="height: 650px; overflow: auto">
+      <exam></exam>
+      <footerBar></footerBar>
+    </div>
     <backTop></backTop>
   </div>
 </template>

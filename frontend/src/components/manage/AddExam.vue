@@ -66,13 +66,14 @@
               <el-button type="success" @click="assign">指定</el-button>
             </el-form-item>
 
-            <el-form-item label="选择时间：" prop="examStartTime">
+            <!-- 开始日期 -->
+            <el-form-item label="开始时间：" prop="examStartTime">
               <el-date-picker
-                v-model="examForm.examDate"
+                v-model="examForm.examStartDate"
                 type="date"
-                placeholder="选择日期"
+                placeholder="开始日期"
                 value-format="yyyy-MM-dd"
-                :picker-options="datePickerOptions"
+                :picker-options="startDatePickerOptions"
                 style="margin-right: 20px"
                 @change="initStartTime"
               >
@@ -80,24 +81,36 @@
               <el-time-picker
                 :disabled="startTimeDisabled"
                 v-model="examForm.examStartTime"
-                placeholder="选择开始时间"
+                placeholder="开始时间"
                 format="HH:mm"
                 value-format="HH:mm"
                 :picker-options="startTimePickerOptions"
-                @change="initEndTime"
+                @change="initOverDate"
                 style="margin-right: 10px"
               >
               </el-time-picker>
-              ~
+            </el-form-item>
+
+            <!-- 结束日期 -->
+            <el-form-item label="结束时间：" prop="examOverTime">
+              <el-date-picker
+                v-model="examForm.examOverDate"
+                type="date"
+                placeholder="结束日期"
+                value-format="yyyy-MM-dd"
+                :picker-options="OverDatePickerOptions"
+                style="margin-right: 20px"
+                :disabled="overDateDisabled"
+                @change="initEndTime"
+              >
+              </el-date-picker>
               <el-time-picker
                 :disabled="endTimeDisabled"
                 v-model="examForm.examEndTime"
-                placeholder="选择结束时间"
+                placeholder="结束时间"
                 format="HH:mm"
                 value-format="HH:mm"
                 :picker-options="endTimePickerOptions"
-                style="margin-left: 10px"
-                @change="countExamTime"
               >
               </el-time-picker>
             </el-form-item>
@@ -187,11 +200,17 @@ export default {
   },
   data() {
     return {
-      datePickerOptions: {
+      startDatePickerOptions: {
         disabledDate: (time) => {
           return time.getTime() < Date.now() - 24 * 60 * 60 * 1000;
         },
       },
+      OverDatePickerOptions: {
+        disabledDate: (time) => {
+          return time.getTime() < this.startDateTimeStamp - 24 * 60 * 60 * 1000;
+        },
+      },
+      startDateTimeStamp: "",
       startTimePickerOptions: {
         selectableRange: "",
       },
@@ -200,13 +219,15 @@ export default {
       },
       endTimeDisabled: true,
       startTimeDisabled: true,
+      overDateDisabled: true,
       inline: false,
       examForm: {
         title: "",
         paperId: "",
         classId: "",
         examStudentIds: [],
-        examDate: "",
+        examStartDate: "",
+        examOverDate: "",
         examStartTime: "",
         examEndTime: "",
         examTimeDuration: "",
@@ -417,9 +438,9 @@ export default {
       this.AssignVisible = false;
     },
     initStartTime() {
-      if (this.examForm.examDate !== null) {
+      if (this.examForm.examStartDate !== null) {
         this.examForm.examStartTime = "";
-        let date = this.examForm.examDate;
+        let startDate = this.examForm.examStartDate;
         let newDate = new Date();
         let year = newDate.getFullYear();
         let month =
@@ -430,7 +451,7 @@ export default {
           newDate.getDate() < 10 ? "0" + newDate.getDate() : newDate.getDate();
         let today = year + "-" + month + "-" + day;
 
-        if (date === today) {
+        if (startDate === today) {
           let hour =
             newDate.getHours() < 10
               ? "0" + newDate.getHours()
@@ -445,62 +466,63 @@ export default {
           this.startTimePickerOptions.selectableRange = "00:00:00 - 23:59:00";
         }
         this.startTimeDisabled = false;
-        console.log(date);
         console.log(today);
       } else {
+        this.examForm.examOverDate = null;
         this.examForm.examStartTime = null;
         this.examForm.examEndTime = null;
+        this.overDateDisabled = true;
         this.startTimeDisabled = true;
         this.endTimeDisabled = true;
       }
     },
-    initEndTime() {
-      if (this.examForm.examStartTime !== "") {
-        this.examForm.examEndTime = "";
-        let startTime = this.examForm.examStartTime;
-        if (startTime !== null) {
-          let limitTime = startTime.split(":");
-          let hour = limitTime[0];
-          let minute =
-            parseInt(limitTime[1]) + 1 < 10
-              ? "0" + (parseInt(limitTime[1]) + 1)
-              : parseInt(limitTime[1]) + 1;
-          let time = hour + ":" + minute + ":00 - 23:59:00";
-          console.log(time);
-          this.endTimePickerOptions.selectableRange = time;
-          this.endTimeDisabled = false;
-        } else {
-          this.endTimeDisabled = true;
-        }
+    initOverDate() {
+      if (this.examForm.examStartTime !== null) {
+        this.examForm.examOverDate = "";
+        let startDateStamp = new Date(this.examForm.examStartDate);
+        this.startDateTimeStamp = startDateStamp;
+        this.overDateDisabled = false;
+      } else {
+        this.examForm.examEndTime = null;
+        this.examForm.examOverDate = null;
+        this.overDateDisabled = true;
+        this.endTimeDisabled = true;
       }
     },
-    countExamTime() {
-      let startTime = this.examForm.examStartTime;
-      let endTime = this.examForm.examEndTime;
-      console.log(startTime);
-      console.log(endTime);
-      if (startTime !== null) {
-        if (endTime !== null) {
-          let startArr = startTime.split(":");
-          let endArr = endTime.split(":");
-          let startHour = parseInt(startArr[0]);
-          let endHour = parseInt(endArr[0]);
-          let startMinute = parseInt(startArr[1]);
-          let endMinute = parseInt(endArr[1]);
-
-          let hourCount = endHour - startHour;
-          let minCount = endMinute - startMinute;
-
-          this.examForm.examTimeDuration = hourCount * 60 + minCount;
+    initEndTime() {
+      if (this.examForm.examOverDate !== null) {
+        this.examForm.examEndTime = "";
+        let startTime = this.examForm.examStartTime;
+        if (this.examForm.examStartDate === this.examForm.examOverDate) {
+          if (startTime !== null) {
+            let limitTime = startTime.split(":");
+            let hour = limitTime[0];
+            let minute =
+              parseInt(limitTime[1]) + 1 < 10
+                ? "0" + (parseInt(limitTime[1]) + 1)
+                : parseInt(limitTime[1]) + 1;
+            let time = hour + ":" + minute + ":00 - 23:59:00";
+            console.log(time);
+            this.endTimePickerOptions.selectableRange = time;
+            this.endTimeDisabled = false;
+          }
+        } else {
+          this.endTimePickerOptions.selectableRange = "00:00:00 - 23:59:00";
+          this.endTimeDisabled = false;
         }
+      } else {
+        this.examForm.examEndTime = null;
+        this.endTimeDisabled = true;
       }
+      console.log(this.endTimeDisabled);
     },
     reset() {
       this.examForm.title = "";
       this.examForm.paperId = "";
       this.examForm.classId = "";
       this.examForm.examStudentIds = [];
-      this.examForm.examDate = "";
+      this.examForm.examStartDate = "";
+      this.examForm.examOverDate = "";
       this.examForm.examStartTime = "";
       this.examForm.examEndTime = "";
       this.examForm.examTimeDuration = "";
@@ -520,9 +542,9 @@ export default {
       }
 
       let startTime =
-        this.examForm.examDate + " " + this.examForm.examStartTime + ":00";
+        this.examForm.examStartDate + " " + this.examForm.examStartTime + ":00";
       let endTime =
-        this.examForm.examDate + " " + this.examForm.examEndTime + ":00";
+        this.examForm.examOverDate + " " + this.examForm.examEndTime + ":00";
       axios({
         method: "post",
         url: "/api/exam/add",

@@ -877,6 +877,9 @@ export default {
   touch-action: pan-y;
   touch-action: pan-x;
 }
+.el-tab-pane {
+  display: flex;
+}
 .paper-container {
   height: 900px;
   overflow: auto;

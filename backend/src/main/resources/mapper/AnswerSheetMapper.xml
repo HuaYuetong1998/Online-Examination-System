@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.yuanqikai.backend.mapper.AnswerSheetMapper">
+  <resultMap id="BaseResultMap" type="cn.yuanqikai.backend.entity.AnswerSheet">
+    <result column="exam_id" jdbcType="INTEGER" property="examId" />
+    <result column="student_id" jdbcType="INTEGER" property="studentId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.yuanqikai.backend.entity.AnswerSheet">
+    <result column="answer_sheet" jdbcType="LONGVARCHAR" property="answerSheet" />
+  </resultMap>
+  <sql id="Blob_Column_List">
+    answer_sheet
+  </sql>
+  <select id="selectRepeat" resultType="java.lang.Integer">
+    select count(*)
+    from answer_sheet
+    where exam_id = #{examId}
+    and student_id = #{studentId}
+  </select>
+  <insert id="insert" parameterType="cn.yuanqikai.backend.entity.AnswerSheet">
+    insert into answer_sheet (exam_id, student_id, answer_sheet
+      )
+    values (#{examId,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{answerSheet,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.yuanqikai.backend.entity.AnswerSheet">
+    insert into answer_sheet
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="examId != null">
+        exam_id,
+      </if>
+      <if test="studentId != null">
+        student_id,
+      </if>
+      <if test="answerSheet != null">
+        answer_sheet,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="examId != null">
+        #{examId,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null">
+        #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="answerSheet != null">
+        #{answerSheet,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateAnswerSheet" parameterType="cn.yuanqikai.backend.entity.AnswerSheet">
+    update answer_sheet
+    set answer_sheet = #{answerSheet,jdbcType=LONGVARCHAR}
+    where exam_id = #{examId,jdbcType=INTEGER}
+    and student_id = #{studentId,jdbcType=INTEGER}
+  </update>
+</mapper>
