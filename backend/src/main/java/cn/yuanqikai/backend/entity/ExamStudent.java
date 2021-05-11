@@ -5,6 +5,10 @@ public class ExamStudent {
 
     private Integer studentId;
 
+    private Integer status;
+
+    private Integer correct;
+
     public Integer getExamId() {
         return examId;
     }
@@ -19,5 +23,21 @@ public class ExamStudent {
 
     public void setStudentId(Integer studentId) {
         this.studentId = studentId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getCorrect() {
+        return correct;
+    }
+
+    public void setCorrect(Integer correct) {
+        this.correct = correct;
     }
 }

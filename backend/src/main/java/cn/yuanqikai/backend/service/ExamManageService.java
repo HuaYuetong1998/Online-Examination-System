@@ -2,8 +2,10 @@ package cn.yuanqikai.backend.service;
 
 import cn.yuanqikai.backend.dto.ExamDTO;
 import cn.yuanqikai.backend.dto.ExamStatusDTO;
+import cn.yuanqikai.backend.dto.SituationDTO;
 import cn.yuanqikai.backend.entity.Exam;
 import cn.yuanqikai.backend.entity.ExamStudent;
+import cn.yuanqikai.backend.entity.StudentSituation;
 import com.github.pagehelper.Page;
 
 import java.text.ParseException;
@@ -18,4 +20,6 @@ public interface ExamManageService {
     int addExamStudent(ExamStudent examStudent);
 
     Page<Exam> selectByMulti(ExamStatusDTO examStatusDTO);
+
+    Page<StudentSituation> selectByStudentId(SituationDTO situationDTO);
 }

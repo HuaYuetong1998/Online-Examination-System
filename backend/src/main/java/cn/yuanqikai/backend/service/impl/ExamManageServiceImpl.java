@@ -2,8 +2,10 @@ package cn.yuanqikai.backend.service.impl;
 
 import cn.yuanqikai.backend.dto.ExamDTO;
 import cn.yuanqikai.backend.dto.ExamStatusDTO;
+import cn.yuanqikai.backend.dto.SituationDTO;
 import cn.yuanqikai.backend.entity.Exam;
 import cn.yuanqikai.backend.entity.ExamStudent;
+import cn.yuanqikai.backend.entity.StudentSituation;
 import cn.yuanqikai.backend.mapper.ExamMapper;
 import cn.yuanqikai.backend.mapper.ExamStudentMapper;
 import cn.yuanqikai.backend.service.ExamManageService;
@@ -56,5 +58,11 @@ public class ExamManageServiceImpl implements ExamManageService {
     public Page<Exam> selectByMulti(ExamStatusDTO examStatusDTO) {
         PageHelper.startPage(examStatusDTO.getCurrentPage(),examStatusDTO.getPageSize());
         return examMapper.selectExamByMulti(examStatusDTO);
+    }
+
+    @Override
+    public Page<StudentSituation> selectByStudentId(SituationDTO situationDTO) {
+        PageHelper.startPage(situationDTO.getCurrentPage(),situationDTO.getPageSize());
+        return examStudentMapper.selectByStudentId(situationDTO);
     }
 }

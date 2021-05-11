@@ -61,4 +61,11 @@
     where exam_id = #{examId,jdbcType=INTEGER}
       and student_id = #{studentId,jdbcType=INTEGER}
   </update>
+  
+  <select id="selectAnswerSheet" resultType="java.lang.String">
+    select answer_sheet
+    from answer_sheet
+    where student_id = #{studentId,jdbcType=INTEGER}
+    and exam_id = #{examId,jdbcType=INTEGER}
+  </select>
 </mapper>

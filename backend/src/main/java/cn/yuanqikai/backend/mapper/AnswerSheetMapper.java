@@ -11,4 +11,6 @@ public interface AnswerSheetMapper {
     int selectRepeat(@Param("examId") Integer examId, @Param("studentId") Integer studentId);
 
     int updateAnswerSheet(AnswerSheet answerSheet);
+
+    String selectAnswerSheet(@Param("studentId") Integer studentId, @Param("examId") Integer examId);
 }

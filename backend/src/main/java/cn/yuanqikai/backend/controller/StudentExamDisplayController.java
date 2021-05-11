@@ -3,8 +3,10 @@ package cn.yuanqikai.backend.controller;
 import cn.yuanqikai.backend.dto.ExamDisplayDTO;
 import cn.yuanqikai.backend.entity.AnswerSheet;
 import cn.yuanqikai.backend.entity.Exam;
+import cn.yuanqikai.backend.entity.ExamStudent;
 import cn.yuanqikai.backend.entity.Paper;
 import cn.yuanqikai.backend.mapper.ExamMapper;
+import cn.yuanqikai.backend.mapper.ExamStudentMapper;
 import cn.yuanqikai.backend.response.DataResponse;
 import cn.yuanqikai.backend.service.PaperManageService;
 import cn.yuanqikai.backend.service.StudentExamDisplayService;
@@ -31,6 +33,9 @@ public class StudentExamDisplayController {
 
     @Autowired
     private ExamMapper examMapper;
+
+    @Autowired
+    private ExamStudentMapper examStudentMapper;
 
     @Autowired
     private PaperManageService paperManageService;
@@ -103,6 +108,15 @@ public class StudentExamDisplayController {
     @GetMapping("/api/examPage/examStatus")
     public DataResponse switchExamStatus(@RequestParam Integer examId) {
         int res = examMapper.updateStatusById(examId);
+        if(res > 0) {
+            return DataResponse.success();
+        }
+        return DataResponse.fail();
+    }
+
+    @PostMapping("/api/examPage/submitStatus")
+    public DataResponse switchSubmitStatus(@RequestBody ExamStudent examStudent) {
+        int res = examStudentMapper.updateStatus(examStudent);
         if(res > 0) {
             return DataResponse.success();
         }

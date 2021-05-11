@@ -109,6 +109,15 @@ const routes = [
         }
       },
       {
+        path: 'correctPaper',
+        name: 'correctPaper',
+        component: () => import('../components/manage/CorrectPaper.vue'),
+        meta:{
+          title:'软工综合测试系统',
+          keepAlive: true
+        }
+      },
+      {
         path: 'studentManage',
         name: 'studentManage',
         component: () => import('../components/manage/StudentManage.vue'),

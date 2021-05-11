@@ -31,4 +31,6 @@ public interface ChoiceQuestionMapper {
     int countBySubjects(List<Integer> subjectIds);
 
     ChoiceQuestion selectQuestionDetail(Integer questionId);
+
+    String selectRightAnswer(Integer questionId);
 }

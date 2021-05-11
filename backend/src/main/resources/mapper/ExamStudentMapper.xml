@@ -4,10 +4,21 @@
   <resultMap id="BaseResultMap" type="cn.yuanqikai.backend.entity.ExamStudent">
     <result column="exam_id" jdbcType="INTEGER" property="examId" />
     <result column="student_id" jdbcType="INTEGER" property="studentId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="correct" jdbcType="INTEGER" property="correct" />
+  </resultMap>
+
+  <resultMap id="Situation" type="cn.yuanqikai.backend.entity.StudentSituation">
+    <result column="exam_id" jdbcType="INTEGER" property="examId" />
+    <result column="exam_title" jdbcType="VARCHAR" property="examTitle"/>
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="correct" jdbcType="INTEGER" property="correct"/>
   </resultMap>
   <insert id="insert" parameterType="cn.yuanqikai.backend.entity.ExamStudent">
-    insert into exam_student (exam_id, student_id)
-    values (#{examId,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER})
+    insert into exam_student (exam_id, student_id, status, 
+      correct)
+    values (#{examId,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{correct,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="cn.yuanqikai.backend.entity.ExamStudent">
     insert into exam_student
@@ -18,6 +29,12 @@
       <if test="studentId != null">
         student_id,
       </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="correct != null">
+        correct,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="examId != null">
@@ -26,6 +43,12 @@
       <if test="studentId != null">
         #{studentId,jdbcType=INTEGER},
       </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="correct != null">
+        #{correct,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
 
@@ -33,5 +56,25 @@
     select exam_id
     from exam_student
     where student_id = #{studentId,jdbcType=INTEGER}
+  </select>
+  <update id="updateStatus" parameterType="cn.yuanqikai.backend.entity.ExamStudent">
+    update exam_student
+    set status = 1
+    where exam_id = #{examId,jdbcType=INTEGER}
+      and student_id = #{studentId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateCorrect" parameterType="cn.yuanqikai.backend.entity.ExamStudent">
+    update exam_student
+    set correct = 1
+    where exam_id = #{examId,jdbcType=INTEGER}
+    and student_id = #{studentId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByStudentId" parameterType="cn.yuanqikai.backend.dto.SituationDTO" resultMap="Situation">
+    select a.exam_id,b.exam_title,a.status,a.correct
+    from exam_student as a,exam_manage as b
+    where a.student_id = #{studentId}
+      and a.exam_id = b.exam_id
   </select>
 </mapper>

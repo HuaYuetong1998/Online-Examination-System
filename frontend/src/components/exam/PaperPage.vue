@@ -625,18 +625,27 @@ export default {
           studentId: studentId,
         },
       }).then((res) => {
-        console.log(res);
         if (res.status === 200) {
           axios({
-            method: "get",
-            url: "/api/examPage/examStatus",
-            params: {
+            method: "post",
+            url: "/api/examPage/submitStatus",
+            data: {
               examId: examId,
+              studentId: studentId,
             },
-          }).then(() => {
-            console.log(res);
+          }).then((res) => {
             if (res.status === 200) {
-              console.log("修改成功");
+              axios({
+                method: "get",
+                url: "/api/examPage/examStatus",
+                params: {
+                  examId: examId,
+                },
+              }).then(() => {
+                if (res.status === 200) {
+                  console.log("修改成功");
+                }
+              });
             }
           });
         }

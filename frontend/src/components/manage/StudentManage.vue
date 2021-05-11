@@ -28,11 +28,15 @@
           <el-table-column prop="tel" label="联系方式"></el-table-column>
           <el-table-column prop="email" label="邮箱"></el-table-column>
           <el-table-column fixed="right" label="操作" width="280">
-            <template>
+            <template slot-scope="scope">
               <el-button icon="el-icon-info" type="primary" size="small"
                 >查看成绩</el-button
               >
-              <el-button icon="el-icon-view" type="success" size="small"
+              <el-button
+                icon="el-icon-view"
+                type="success"
+                size="small"
+                @click.native.prevent="gotoSituation(scope.$index, resultData)"
                 >查看考试情况</el-button
               >
             </template>
@@ -110,6 +114,16 @@ export default {
           }
           this.loading = false;
         }
+      });
+    },
+
+    gotoSituation(index, rows) {
+      let id = rows[index].studentId;
+      this.$router.push({
+        name: "studentSituation",
+        params: {
+          id: id,
+        },
       });
     },
   },

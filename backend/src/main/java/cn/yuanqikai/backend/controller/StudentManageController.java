@@ -9,9 +9,6 @@ import cn.yuanqikai.backend.entity.StudentInfo;
 import cn.yuanqikai.backend.response.DataResponse;
 import cn.yuanqikai.backend.service.StudentManageService;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -103,6 +100,12 @@ public class StudentManageController {
         map.put("studentInfos",studentInfos);
         map.put("pageTotal",studentInfos.getTotal());
         return  DataResponse.success().data(map);
+    }
+
+    @GetMapping("/api/student/situation")
+    public DataResponse getStudentInfo(@RequestParam Integer studentId) {
+        StudentInfo studentInfo = studentManageService.selectByStudentId(studentId);
+        return DataResponse.success().data(studentInfo);
     }
 
 }
