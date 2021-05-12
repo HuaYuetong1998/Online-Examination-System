@@ -8,11 +8,13 @@ import VueWechatTitle from 'vue-wechat-title'
 import VueCookies from 'vue-cookies'
 import Axios from 'axios'
 import Vuex from 'vuex'
+import * as echarts from 'echarts'
 import 'default-passive-events'
 
 Vue.use(VueWechatTitle)
 Vue.use(Vuex)
 Vue.use(VueCookies)
+Vue.prototype.$echarts = echarts 
 
 Vue.config.productionTip = false
 

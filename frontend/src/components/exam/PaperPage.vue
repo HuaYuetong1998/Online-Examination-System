@@ -97,7 +97,7 @@
           </el-scrollbar>
         </div>
 
-        <el-button class="submit" type="primary" @click="submitPaper"
+        <el-button class="submit" type="primary" @click="submit"
           >交卷</el-button
         >
       </el-card>
@@ -605,6 +605,34 @@ export default {
       return num < 10 ? "0" + num : "" + num;
     },
 
+    formatNowTime() {
+      let date = new Date();
+      let year = date.getFullYear();
+      let month =
+        date.getMonth() + 1 < 10
+          ? "0" + (date.getMonth() + 1)
+          : date.getMonth() + 1;
+      let day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+      let hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+      let minute =
+        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+      let second =
+        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+      let nowTime =
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        " " +
+        hour +
+        ":" +
+        minute +
+        ":" +
+        second;
+      return nowTime;
+    },
+
     submitPaper() {
       this.$router.push({ path: "/student/exam" });
     },
@@ -615,6 +643,7 @@ export default {
       let answerSheet = localStorage.getItem("answerSheet");
       let examId = this.examId;
       let studentId = this.$cookies.get("studentId");
+      let submitTime = this.formatNowTime();
 
       axios({
         method: "post",
@@ -623,6 +652,7 @@ export default {
           answerSheet: answerSheet,
           examId: examId,
           studentId: studentId,
+          submitTime: submitTime,
         },
       }).then((res) => {
         if (res.status === 200) {
@@ -643,7 +673,9 @@ export default {
                 },
               }).then(() => {
                 if (res.status === 200) {
+                  this.$router.push({ path: "/student/exam" });
                   console.log("修改成功");
+                  
                 }
               });
             }

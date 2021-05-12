@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -131,6 +133,17 @@ public class ExamManageController {
         int res = examStudentMapper.updateCorrect(examStudent);
         if(res > 0) {
             return DataResponse.success();
+        }
+        return DataResponse.fail();
+    }
+
+    @GetMapping("/api/exam/getSubmitTime")
+    public DataResponse getSubmitTime(@RequestParam Integer studentId, @RequestParam Integer examId) {
+        Date date = answerSheetMapper.selectSubmitTime(studentId, examId);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String submitTime = simpleDateFormat.format(date);
+        if(StringUtils.isNotEmpty(submitTime)) {
+            return DataResponse.success().data(submitTime);
         }
         return DataResponse.fail();
     }

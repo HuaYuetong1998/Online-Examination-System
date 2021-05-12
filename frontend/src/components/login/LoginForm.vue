@@ -63,7 +63,6 @@ export default {
         background: "rgba(0, 0, 0, 0.7)",
       });
       setTimeout(() => {
-        loading.close();
         axios({
           method: "post",
           url: "/api/login",
@@ -217,6 +216,7 @@ export default {
               }
             }
           });
+        loading.close();
       }, 500);
     },
     enterLogin(e) {

@@ -10,6 +10,7 @@ import paperPage from "../components/exam/PaperPage";
 import backTop from "../components/exam/BackTop";
 
 export default {
+  inject: ["reload"],
   components: {
     paperPage,
     backTop,
@@ -31,7 +32,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.$refs.paperPage.submit();
+          //this.$refs.paperPage.submit();
           localStorage.removeItem("remainSecond");
           localStorage.removeItem("answerSheet");
           localStorage.removeItem("hasWriten");

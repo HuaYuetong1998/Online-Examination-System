@@ -96,8 +96,7 @@ public class StudentExamDisplayController {
 
     @PostMapping("/api/examPage/answerSheet")
     public DataResponse saveAnswerSheet(@RequestBody AnswerSheet answerSheet) {
-
-        logger.error(answerSheet.getAnswerSheet());
+        logger.error(answerSheet.getSubmitTime().toString());
         int res = studentExamDisplayService.saveAnswerSheet(answerSheet);
         if (res > 0) {
             return DataResponse.success();

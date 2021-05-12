@@ -29,7 +29,11 @@
           <el-table-column prop="email" label="邮箱"></el-table-column>
           <el-table-column fixed="right" label="操作" width="280">
             <template slot-scope="scope">
-              <el-button icon="el-icon-info" type="primary" size="small"
+              <el-button
+                icon="el-icon-info"
+                type="primary"
+                size="small"
+                @click.native.prevent="gotoScore(scope.$index, resultData)"
                 >查看成绩</el-button
               >
               <el-button
@@ -116,7 +120,15 @@ export default {
         }
       });
     },
-
+    gotoScore(index, rows) {
+      let id = rows[index].studentId;
+      this.$router.push({
+        name: "scoreManage",
+        params: {
+          id: id,
+        },
+      });
+    },
     gotoSituation(index, rows) {
       let id = rows[index].studentId;
       this.$router.push({

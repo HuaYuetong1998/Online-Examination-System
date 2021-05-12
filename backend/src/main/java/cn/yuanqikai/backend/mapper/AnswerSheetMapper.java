@@ -3,6 +3,8 @@ package cn.yuanqikai.backend.mapper;
 import cn.yuanqikai.backend.entity.AnswerSheet;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
+
 public interface AnswerSheetMapper {
     int insert(AnswerSheet record);
 
@@ -13,4 +15,6 @@ public interface AnswerSheetMapper {
     int updateAnswerSheet(AnswerSheet answerSheet);
 
     String selectAnswerSheet(@Param("studentId") Integer studentId, @Param("examId") Integer examId);
+
+    Date selectSubmitTime(@Param("studentId") Integer studentId, @Param("examId") Integer examId);
 }

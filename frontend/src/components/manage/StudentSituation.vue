@@ -330,7 +330,32 @@ export default {
                 },
               }).then((res) => {
                 if (res.status === 200) {
-                  
+                  axios({
+                    method: "get",
+                    url: "/api/exam/getSubmitTime",
+                    params: {
+                      studentId: studentId,
+                      examId: examId,
+                    },
+                  }).then((res) => {
+                    if (res.status === 200) {
+                      let submitTime = res.data.data;
+                      axios({
+                        method: "post",
+                        url: "/api/score/save",
+                        data: {
+                          examId: examId,
+                          studentId: studentId,
+                          score: count,
+                          examTime: submitTime,
+                        },
+                      }).then((res) => {
+                        if (res.status === 200) {
+                          console.log("录入成功");
+                        }
+                      });
+                    }
+                  });
                   this.reload();
                 }
               });

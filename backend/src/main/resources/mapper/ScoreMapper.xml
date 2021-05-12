@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.yuanqikai.backend.mapper.ScoreMapper">
+  <resultMap id="BaseResultMap" type="cn.yuanqikai.backend.entity.Score">
+    <id column="score_id" jdbcType="INTEGER" property="scoreId" />
+    <result column="exam_id" jdbcType="INTEGER" property="examId" />
+    <result column="student_id" jdbcType="INTEGER" property="studentId" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="exam_time" jdbcType="TIMESTAMP" property="examTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    score_id, exam_id, student_id, score, exam_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from score_manage
+    where score_id = #{scoreId,jdbcType=INTEGER}
+  </select>
+  <select id="selectStudentScores" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from score_manage
+    where student_id = #{studentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from score_manage
+    where score_id = #{scoreId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.yuanqikai.backend.entity.Score">
+    insert into score_manage (score_id, exam_id, student_id, 
+      score, exam_time)
+    values (#{scoreId,jdbcType=INTEGER}, #{examId,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, 
+      #{score,jdbcType=INTEGER}, #{examTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.yuanqikai.backend.entity.Score">
+    insert into score_manage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="scoreId != null">
+        score_id,
+      </if>
+      <if test="examId != null">
+        exam_id,
+      </if>
+      <if test="studentId != null">
+        student_id,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="examTime != null">
+        exam_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="scoreId != null">
+        #{scoreId,jdbcType=INTEGER},
+      </if>
+      <if test="examId != null">
+        #{examId,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null">
+        #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="examTime != null">
+        #{examTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.yuanqikai.backend.entity.Score">
+    update score_manage
+    <set>
+      <if test="examId != null">
+        exam_id = #{examId,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null">
+        student_id = #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="examTime != null">
+        exam_time = #{examTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where score_id = #{scoreId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.yuanqikai.backend.entity.Score">
+    update score_manage
+    set exam_id = #{examId,jdbcType=INTEGER},
+      student_id = #{studentId,jdbcType=INTEGER},
+      score = #{score,jdbcType=INTEGER},
+      exam_time = #{examTime,jdbcType=TIMESTAMP}
+    where score_id = #{scoreId,jdbcType=INTEGER}
+  </update>
+
+</mapper>

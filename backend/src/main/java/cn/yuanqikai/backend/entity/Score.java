@@ -5,16 +5,26 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-public class AnswerSheet {
+public class Score {
+    private Integer scoreId;
+
     private Integer examId;
 
     private Integer studentId;
 
+    private Integer score;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private Date submitTime;
+    private Date examTime;
 
-    private String answerSheet;
+    public Integer getScoreId() {
+        return scoreId;
+    }
+
+    public void setScoreId(Integer scoreId) {
+        this.scoreId = scoreId;
+    }
 
     public Integer getExamId() {
         return examId;
@@ -32,19 +42,19 @@ public class AnswerSheet {
         this.studentId = studentId;
     }
 
-    public Date getSubmitTime() {
-        return submitTime;
+    public Integer getScore() {
+        return score;
     }
 
-    public void setSubmitTime(Date submitTime) {
-        this.submitTime = submitTime;
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
-    public String getAnswerSheet() {
-        return answerSheet;
+    public Date getExamTime() {
+        return examTime;
     }
 
-    public void setAnswerSheet(String answerSheet) {
-        this.answerSheet = answerSheet == null ? null : answerSheet.trim();
+    public void setExamTime(Date examTime) {
+        this.examTime = examTime;
     }
 }

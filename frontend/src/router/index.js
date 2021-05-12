@@ -28,7 +28,7 @@ const routes = [
     component: () => import('../views/LoginPage.vue'),
     meta:{
       title:'登录',
-      keepAlive:false
+      keepAlive:true
     }
   },
   {
@@ -37,7 +37,7 @@ const routes = [
     component: () => import('../views/RegisterPage.vue'),
     meta:{
       title:'注册',
-      keepAlive:false
+      keepAlive:true
     }
   },
   {
@@ -82,7 +82,7 @@ const routes = [
     component: () => import('../views/ExamPage.vue'),
     meta:{
       title:'考试界面',
-      keepAlive:false
+      keepAlive:true
     }
   },
   {
