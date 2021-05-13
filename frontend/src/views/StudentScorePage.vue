@@ -1,8 +1,10 @@
 <template>
   <div>
     <headBar></headBar>
-    <score></score>
-    <footerBar></footerBar>
+    <div style="height: 650px; overflow: auto">
+      <score></score>
+      <footerBar></footerBar>
+    </div>
     <backTop></backTop>
   </div>
 </template>

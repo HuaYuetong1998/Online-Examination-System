@@ -6,9 +6,14 @@ import cn.yuanqikai.backend.dto.StudentInfoIdsDTO;
 import cn.yuanqikai.backend.dto.StudentManageSearchDTO;
 import cn.yuanqikai.backend.entity.StudentClass;
 import cn.yuanqikai.backend.entity.StudentInfo;
+import cn.yuanqikai.backend.entity.User;
+import cn.yuanqikai.backend.mapper.StudentInfoMapper;
+import cn.yuanqikai.backend.mapper.UserMapper;
 import cn.yuanqikai.backend.response.DataResponse;
 import cn.yuanqikai.backend.service.StudentManageService;
 import com.github.pagehelper.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +29,12 @@ import java.util.List;
 public class StudentManageController {
     @Autowired
     private StudentManageService studentManageService;
+
+    @Autowired
+    private StudentInfoMapper studentInfoMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @GetMapping("/api/addToClass/student")
     public DataResponse addToClass(@RequestParam Integer currentPage,@RequestParam Integer pageSize) {
@@ -108,4 +119,23 @@ public class StudentManageController {
         return DataResponse.success().data(studentInfo);
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
+    @PostMapping("/api/student/saveInfo")
+    public DataResponse saveStudentInfo(@RequestBody StudentInfo studentInfo) {
+
+        //int res = studentInfoMapper.updateByPrimaryKeySelective(studentInfo);
+        Integer studentId = studentInfo.getStudentId();
+        String tel = studentInfoMapper.selectByPrimaryKey(studentId).getTel();
+        logger.error("tel is :" + tel);
+        User user = userMapper.selectByTel(tel);
+        user.setRealName(studentInfo.getRealName());
+        user.setTel(studentInfo.getTel());
+        user.setEmail(studentInfo.getEmail());
+        int result = userMapper.updateByPrimaryKeySelective(user);
+        if (result != 0) {
+            studentInfoMapper.updateByPrimaryKeySelective(studentInfo);
+            return DataResponse.success();
+        }
+        return DataResponse.fail();
+    }
 }

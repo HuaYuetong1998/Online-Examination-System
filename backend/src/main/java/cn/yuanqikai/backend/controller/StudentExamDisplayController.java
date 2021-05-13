@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.crypto.Data;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,5 +121,20 @@ public class StudentExamDisplayController {
             return DataResponse.success();
         }
         return DataResponse.fail();
+    }
+
+    @GetMapping("/api/count/getCount")
+    public DataResponse getCount(@RequestParam Integer studentId) {
+        int totalCount = examStudentMapper.countTotalExam(studentId);
+        int currentCount = examStudentMapper.countCurrentExam(studentId);
+        int hasSubmitCount = examStudentMapper.countHasSubmit(studentId);
+        int notSubmitCount = examStudentMapper.countNotSubmit(studentId);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("totalCount",totalCount);
+        map.put("currentCount",currentCount);
+        map.put("hasSubmitCount",hasSubmitCount);
+        map.put("notSubmitCount",notSubmitCount);
+        return DataResponse.success().data(map);
     }
 }

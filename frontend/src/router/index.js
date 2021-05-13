@@ -59,11 +59,11 @@ const routes = [
     }
   },
   {
-    path: '/student/practice', //练习页面
-    name: 'practice',
-    component: () => import('../views/StudentPracticePage.vue'),
+    path: '/student/info', //练习页面
+    name: 'info',
+    component: () => import('../views/StudentInfo.vue'),
     meta:{
-      title:'考试练习',
+      title:'个人信息',
       keepAlive: true
     }
   },

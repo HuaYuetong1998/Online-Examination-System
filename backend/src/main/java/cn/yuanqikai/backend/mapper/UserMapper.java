@@ -21,4 +21,6 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     Page<User> selectStudentUser();
+
+    User selectByTel(String tel);
 }

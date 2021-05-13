@@ -2,7 +2,7 @@
   <div>
     <headBar></headBar>
     <div style="height: 650px; overflow: auto">
-      <practice></practice>
+      <info></info>
       <footerBar></footerBar>
       <backTop></backTop>
     </div>
@@ -11,14 +11,14 @@
 
 <script>
 import headBar from "../components/exam/Header";
-import practice from "../components/exam/Practice";
+import info from "../components/exam/Info";
 import footerBar from "../components/exam/Footer";
 import backTop from "../components/exam/BackTop";
 
 export default {
   components: {
     headBar,
-    practice,
+    info,
     footerBar,
     backTop,
   },

@@ -246,7 +246,7 @@
           </el-card>
         </transition>
       </el-tab-pane>
-      <el-tab-pane label="上传试卷" name="upload"></el-tab-pane>
+      <!-- <el-tab-pane label="上传试卷" name="upload"></el-tab-pane> -->
     </el-tabs>
 
     <!-- 手动添加题目 -->

@@ -19,4 +19,12 @@ public interface ExamStudentMapper {
     int updateCorrect(ExamStudent examStudent);
 
     Page<StudentSituation> selectByStudentId(SituationDTO situationDTO);
+
+    int countTotalExam(Integer studentId);
+
+    int countCurrentExam(Integer studentId);
+
+    int countHasSubmit(Integer studentId);
+
+    int countNotSubmit(Integer studentId);
 }

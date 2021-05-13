@@ -63,6 +63,7 @@
                 icon="el-icon-view"
                 type="warning"
                 size="small"
+                @click.native.prevent="turnDetail(scope.$index, resultData)"
                 v-if="scope.row.correct == '1'"
                 >阅卷情况</el-button
               >
@@ -376,6 +377,11 @@ export default {
           examId: examId,
         },
       });
+    },
+
+    turnDetail(index, rows) {
+      let studentId = this.situationForm.studentId;
+      let examId = rows[index].examId;
     },
   },
 

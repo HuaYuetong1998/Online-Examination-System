@@ -77,4 +77,32 @@
     where a.student_id = #{studentId}
       and a.exam_id = b.exam_id
   </select>
+
+  <select id="countTotalExam" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*)
+    from exam_student
+    where student_id = #{studentId,jdbcType=INTEGER}
+  </select>
+
+  <select id="countCurrentExam" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*)
+    from
+        (select a.status,b.exam_id
+            from exam_manage as a,
+                 exam_student as b
+            where a.exam_id = b.exam_id
+            and b.student_id = #{studentId,jdbcType=INTEGER}) as c
+    where c.status = 0;
+  </select>
+  <select id="countHasSubmit" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*)
+    from exam_student
+    where student_id = #{studentId,jdbcType=INTEGER} and status = 1
+  </select>
+
+  <select id="countNotSubmit" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*)
+    from exam_student
+    where student_id = #{studentId,jdbcType=INTEGER} and status = 0
+  </select>
 </mapper>

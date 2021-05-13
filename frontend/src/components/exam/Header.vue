@@ -17,9 +17,7 @@
             ><span>首页</span></el-menu-item
           >
           <el-menu-item class="nav-item" index="exam">我的考试</el-menu-item>
-          <el-menu-item class="nav-item" index="practice"
-            >考前练习</el-menu-item
-          >
+          <el-menu-item class="nav-item" index="info">个人信息</el-menu-item>
           <el-menu-item class="nav-item" index="score">我的成绩</el-menu-item>
           <div style="padding: 0" class="gap">
             <div class="nav-gap"></div>
@@ -82,7 +80,9 @@ export default {
     handleCommand(command) {
       switch (command) {
         case "info":
-          this.$message("info");
+          this.$router.push({
+            name: "info",
+          });
           break;
         case "modifyPwd":
           this.dialogFormVisible = true;

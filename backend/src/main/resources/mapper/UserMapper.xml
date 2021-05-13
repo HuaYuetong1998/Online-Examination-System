@@ -44,6 +44,12 @@
     from user
     where user_name = #{userName,jdbcType=VARCHAR}
   </select>
+  <select id="selectByTel" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where tel = #{tel,jdbcType=VARCHAR}
+  </select>
   <insert id="insert" parameterType="cn.yuanqikai.backend.entity.User">
     insert into user (user_id, user_name, password, 
       gender, real_name, tel, 

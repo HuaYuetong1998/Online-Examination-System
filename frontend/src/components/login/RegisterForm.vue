@@ -14,7 +14,12 @@
           <p class="info">注 册</p>
         </el-row>
 
-        <el-form ref="form" :model="form" label-width="80px">
+        <el-form
+          ref="form"
+          :model="form"
+          label-width="80px"
+          class="registerForm"
+        >
           <el-form-item label="用户名" class="input">
             <el-input
               v-model="form.username"
@@ -318,7 +323,7 @@ export default {
   color: rgb(69, 158, 231);
   font-weight: bold;
 }
-.el-form {
+.registerForm {
   margin: 15px 30px;
 }
 .el-form-item {

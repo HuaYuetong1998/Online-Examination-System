@@ -39,13 +39,27 @@
         <span class="box-title" style="background: #f56c6c">已结束</span>
         <div class="main">
           <a
-            href="#"
+            @click="detail(item.status, item.examId)"
             class="urlLink"
             v-for="item in overedExamInfo"
             :key="item.examId"
           >
             <el-card class="box-card" shadow="hover">
-              <el-tag type="warning" class="exam-tag">未批改</el-tag>
+              <el-tag
+                type="warning"
+                class="exam-tag"
+                size="mini"
+                v-if="item.status === 0"
+                >未批改</el-tag
+              >
+              <el-tag
+                type="success"
+                class="exam-tag"
+                size="mini"
+                v-if="item.status === 1"
+                >已批改</el-tag
+              >
+
               <ul>
                 <li>考试名称：{{ item.examTitle }}</li>
                 <li>题目数量：{{ item.questionsNum }}</li>
@@ -91,6 +105,7 @@ export default {
       overedPageSize: 6,
       onGoingPageTotal: null,
       overedPageTotal: null,
+      correctStatus: [],
     };
   },
   methods: {
@@ -109,7 +124,7 @@ export default {
           this.examingInfo = [];
           if (res.status === 200) {
             let result = res.data.data;
-            console.log(result);
+            //console.log(result);
             let onGoing = result.examOnGoingData;
             this.onGoingPageTotal = result.examOnGoingTotal;
             for (let i = 0; i < onGoing.length; i++) {
@@ -142,21 +157,51 @@ export default {
           this.overedExamInfo = [];
           if (res.status === 200) {
             let result = res.data.data;
-            console.log(result);
+            //console.log(result);
             let overed = result.examOveredData;
             this.overedPageTotal = result.examOveredTotal;
 
-            for (let i = 0; i < overed.length; i++) {
-              this.overedExamInfo.push({
-                examId: overed[i].examId,
-                examTitle: overed[i].examTitle,
-                timeLimit: overed[i].timeLimit,
-                startTime: overed[i].startTime,
-                questionsNum: overed[i].questionsNum,
-                totalScore: overed[i].totalScore,
-                overTime: overed[i].overTime,
-              });
-            }
+            axios({
+              method: "post",
+              url: "/api/exam/situation",
+              data: {
+                studentId: studentId,
+                currentPage: this.overedCurrentPage,
+                pageSize: this.overedPageSize,
+              },
+            }).then((res) => {
+              if (res.status === 200) {
+                let correctStatus = res.data.data.examStudents;
+                let hasCorrect = [];
+                console.log(res.data.data);
+
+                for (let i = 0; i < correctStatus.length; i++) {
+                  if (correctStatus[i].status === 1) {
+                    hasCorrect.push({
+                      examId: correctStatus[i].examId,
+                      examTitle: correctStatus[i].examTitle,
+                      correct: correctStatus[i].correct,
+                    });
+                  }
+                }
+
+                for (let i = 0; i < overed.length; i++) {
+                  this.overedExamInfo.push({
+                    examId: overed[i].examId,
+                    examTitle: overed[i].examTitle,
+                    timeLimit: overed[i].timeLimit,
+                    startTime: overed[i].startTime,
+                    questionsNum: overed[i].questionsNum,
+                    totalScore: overed[i].totalScore,
+                    overTime: overed[i].overTime,
+                    status: correctStatus[i].correct,
+                  });
+                  console.log(this.overedExamInfo);
+                }
+                console.log(hasCorrect);
+              }
+            });
+            //console.log(result.examOveredData);
           }
         });
       }
@@ -168,6 +213,14 @@ export default {
     handleOveredCurrentChange(val) {
       this.overedCurrentPage = val;
       this.initExamOvered();
+    },
+    detail(status, examId) {
+      if (status === 0) {
+        this.$notify.info({
+          title: "消息",
+          message: "教师还未批改，请等教师阅卷完成后再查看",
+        });
+      }
     },
 
     examPrompt(examId) {

@@ -17,11 +17,11 @@
             text-color="#fff"
             active-text-color="#ffd04b"
           >
-            <el-menu-item index="index" class="tag">首页</el-menu-item>
-            <el-menu-item index="message" class="tag">我的信息</el-menu-item>
+            <!-- <el-menu-item index="index" class="tag">首页</el-menu-item>
+            <el-menu-item index="info" class="tag">我的信息</el-menu-item>
             <div style="padding: 0" class="gap">
               <div class="nav-gap"></div>
-            </div>
+            </div> -->
             <el-dropdown
               @command="handleCommand"
               trigger="click"
